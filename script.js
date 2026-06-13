@@ -1,54 +1,5 @@
-// ===== Scroll reveal =====
-// Boxes slide in from alternating sides as they enter the viewport.
-(function () {
-  // Elements that should animate in, and how they should slide.
-  const groups = [
-    { selector: '.card',         alternate: true  },
-    { selector: '.team-card',    alternate: true  },
-    { selector: '.achieve-card', alternate: true  },
-    { selector: '.bring-card',   alternate: true  },
-    { selector: '.timeline li',  alternate: true  },
-    { selector: '.week',         alternate: true  },
-    { selector: '.price-card',   alternate: true  },
-    { selector: '.discount',     alternate: true  },
-    { selector: '.reg-form',     dir: 'reveal-up' },
-    { selector: '.section-title',dir: 'reveal-up' },
-    { selector: '.section-lead', dir: 'reveal-up' },
-  ];
-
-  const targets = [];
-  groups.forEach((g) => {
-    document.querySelectorAll(g.selector).forEach((el, i) => {
-      el.classList.add('reveal');
-      if (g.alternate) {
-        el.classList.add(i % 2 === 0 ? 'reveal-left' : 'reveal-right');
-      } else {
-        el.classList.add(g.dir || 'reveal-up');
-      }
-      el.style.transitionDelay = (g.alternate ? (i % 4) * 0.08 : 0) + 's';
-      targets.push(el);
-    });
-  });
-
-  if (!('IntersectionObserver' in window)) {
-    targets.forEach((el) => el.classList.add('is-visible'));
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-  );
-
-  targets.forEach((el) => observer.observe(el));
-})();
+// ===== Scroll reveal: disabled =====
+// (Cards no longer slide in from the side; everything shows normally.)
 
 // ===== Week picker buttons =====
 const weekButtons = document.getElementById('weekButtons');

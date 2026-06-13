@@ -624,6 +624,46 @@ a { color: var(--purple); }
   .timeline .time { min-width: auto; }
 }
 
+/* ===== FAQ ===== */
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(76, 51, 179, 0.07);
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+}
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1rem 1.3rem;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.5rem;
+  color: var(--purple);
+  font-weight: 800;
+  transition: transform 0.2s ease;
+  line-height: 1;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover { color: var(--purple); }
+.faq-item > p {
+  margin: 0;
+  padding: 0 1.3rem 1.2rem;
+  color: #5a527d;
+  line-height: 1.6;
+}
+
 /* ===== Review / "Check Your Information" ===== */
 .review-panel {
   max-width: 720px;

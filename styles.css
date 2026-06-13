@@ -322,13 +322,12 @@ a { color: var(--purple); }
   gap: 1rem;
   align-items: center;
   background: #fff;
-  border-left: 6px solid var(--purple);
   border-radius: 12px;
   padding: 0.7rem 1.1rem;
   margin-bottom: 0.6rem;
   box-shadow: 0 4px 12px rgba(76, 51, 179, 0.06);
 }
-.timeline li.break { border-left-color: var(--yellow); background: #fffdf3; }
+.timeline li.break { background: #fffdf3; }
 .timeline .time {
   font-weight: 800;
   color: var(--purple);

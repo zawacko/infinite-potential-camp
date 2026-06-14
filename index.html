@@ -6,10 +6,25 @@
   <title>Infinite Potential Math: Kids Learning Camp — Where Numbers Come Alive!</title>
   <meta name="description" content="Infinite Potential Math: Kids Learning Camp — a fun-filled math summer camp for rising 2nd through 6th graders, run by five passionate middle schoolers who love math." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Social share preview (Open Graph + Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Infinite Potential Math: Kids Learning Camp" />
+  <meta property="og:title" content="Infinite Potential Math: Kids Learning Camp" />
+  <meta property="og:description" content="A fun summer math camp for rising 2nd–6th graders, run by passionate middle schoolers. Summer 2027 — sign up today!" />
+  <meta property="og:url" content="https://zawacko.github.io/infinite-potential-camp/" />
+  <meta property="og:image" content="https://zawacko.github.io/infinite-potential-camp/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Infinite Potential Math: Kids Learning Camp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Infinite Potential Math: Kids Learning Camp" />
+  <meta name="twitter:description" content="A fun summer math camp for rising 2nd–6th graders. Summer 2027 — sign up today!" />
+  <meta name="twitter:image" content="https://zawacko.github.io/infinite-potential-camp/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 </head>
 <body>
 
@@ -28,6 +43,7 @@
     </a>
     <nav class="nav-links">
       <a href="#about">About</a>
+      <a href="#puzzle">Puzzle</a>
       <a href="#team">Team</a>
       <a href="#achievements">Achievements</a>
       <a href="#schedule">Schedule</a>
@@ -83,6 +99,20 @@
         <div class="card-emoji">🎲</div>
         <h3>Games &amp; Puzzles</h3>
         <p>Brain teasers, math games, and hands-on challenges keep every day playful and full of "aha!" moments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Try a Puzzle -->
+  <section id="puzzle" class="section puzzle">
+    <h2 class="section-title">Try a Puzzle! 🧩</h2>
+    <p class="section-lead">Get a taste of the fun — can you crack these brain-teasers?</p>
+    <div class="puzzle-card">
+      <p class="puzzle-q" id="puzzleQ">Loading a puzzle…</p>
+      <p class="puzzle-a" id="puzzleA" hidden></p>
+      <div class="puzzle-actions">
+        <button type="button" class="btn btn-ghost" id="puzzleReveal">Show Answer</button>
+        <button type="button" class="btn btn-primary" id="puzzleNext">New Puzzle →</button>
       </div>
     </div>
   </section>
@@ -436,6 +466,6 @@
     <p class="footer-fine">© 2027 Infinite Potential Math: Kids Learning Camp. All rights reserved.</p>
   </footer>
 
-  <script src="script.js?v=11"></script>
+  <script src="script.js?v=12"></script>
 </body>
 </html>

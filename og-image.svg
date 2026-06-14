@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6c4ce0"/>
+      <stop offset="1" stop-color="#4f33b3"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff5da2"/>
+      <stop offset="1" stop-color="#ff8a5c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- faint floating math symbols -->
+  <g fill="#ffffff" opacity="0.10" font-family="Arial, Helvetica, sans-serif" font-weight="bold">
+    <text x="90" y="170" font-size="120">+</text>
+    <text x="1030" y="200" font-size="110">π</text>
+    <text x="1080" y="560" font-size="130">÷</text>
+    <text x="120" y="560" font-size="120">√</text>
+    <text x="980" y="430" font-size="90">42</text>
+    <text x="60" y="380" font-size="90">×</text>
+  </g>
+
+  <!-- logo badge -->
+  <rect x="500" y="70" width="120" height="120" rx="28" fill="url(#badge)"/>
+  <text x="560" y="158" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="bold" fill="#ffffff" text-anchor="middle">&#8734;</text>
+
+  <!-- title -->
+  <text x="600" y="300" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="bold" fill="#ffffff" text-anchor="middle">Infinite Potential Math</text>
+  <text x="600" y="370" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="bold" fill="#ffc83d" text-anchor="middle">Kids Learning Camp</text>
+
+  <!-- tagline -->
+  <text x="600" y="450" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#e7e0ff" text-anchor="middle">A fun summer math camp for rising 2nd&#8211;6th graders</text>
+
+  <!-- pill -->
+  <rect x="445" y="500" width="310" height="62" rx="31" fill="#ffffff"/>
+  <text x="600" y="541" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" fill="#4f33b3" text-anchor="middle">Summer 2027 &#183; Sign up today!</text>
+</svg>

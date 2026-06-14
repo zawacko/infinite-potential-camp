@@ -215,3 +215,49 @@ confirmBtn.addEventListener('click', async () => {
     errMsg.textContent = '😕 Sorry, something went wrong sending that. Please try again, or email us directly.';
   }
 });
+
+// ===== Try a Puzzle =====
+(function () {
+  const qEl = document.getElementById('puzzleQ');
+  const aEl = document.getElementById('puzzleA');
+  const revealBtn = document.getElementById('puzzleReveal');
+  const nextBtn = document.getElementById('puzzleNext');
+  if (!qEl || !aEl || !revealBtn || !nextBtn) return;
+
+  const puzzles = [
+    { q: 'I am a 2-digit number. My tens digit is double my ones digit, and my digits add up to 9. What number am I?', a: '63' },
+    { q: 'What is the next number in the pattern: 2, 4, 8, 16, ___?', a: '32 (each number doubles)' },
+    { q: 'A farmer has 17 sheep. All but 9 run away. How many sheep are left?', a: '9 — "all but 9" means 9 stay!' },
+    { q: 'Double a number and add 4, and you get 14. What was the number?', a: '5' },
+    { q: 'How many sides do 3 triangles have all together?', a: '9 (3 sides × 3 triangles)' },
+    { q: 'What is 7 × 6?', a: '42' },
+    { q: 'What number is exactly halfway between 10 and 30?', a: '20' },
+    { q: 'What is half of a quarter of 80?', a: '10 (a quarter of 80 is 20, half of 20 is 10)' },
+    { q: 'If today is Wednesday, what day will it be in 10 days?', a: 'Saturday' },
+    { q: 'A pizza is cut into 8 equal slices. You eat 3. What fraction is left?', a: '5/8' },
+  ];
+
+  let current = -1;
+
+  function show(i) {
+    current = i;
+    qEl.textContent = puzzles[i].q;
+    aEl.textContent = '✅ ' + puzzles[i].a;
+    aEl.hidden = true;
+    revealBtn.textContent = 'Show Answer';
+  }
+
+  function nextPuzzle() {
+    let i;
+    do { i = Math.floor(Math.random() * puzzles.length); } while (i === current && puzzles.length > 1);
+    show(i);
+  }
+
+  revealBtn.addEventListener('click', () => {
+    aEl.hidden = !aEl.hidden;
+    revealBtn.textContent = aEl.hidden ? 'Show Answer' : 'Hide Answer';
+  });
+  nextBtn.addEventListener('click', nextPuzzle);
+
+  nextPuzzle();
+})();

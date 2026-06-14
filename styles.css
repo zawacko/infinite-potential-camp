@@ -624,6 +624,36 @@ a { color: var(--purple); }
   .timeline .time { min-width: auto; }
 }
 
+/* ===== Try a Puzzle ===== */
+.puzzle-card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #fff, #f6f1ff);
+  border: 2px solid #eadfff;
+  border-radius: var(--radius);
+  padding: 2.2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.puzzle-q {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin: 0 0 1rem;
+  line-height: 1.4;
+  min-height: 2.6em;
+}
+.puzzle-a {
+  background: #ece6ff;
+  color: var(--purple);
+  font-weight: 800;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin: 0 0 1.3rem;
+  font-size: 1.1rem;
+}
+.puzzle-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
 /* ===== FAQ ===== */
 .faq-list { max-width: 720px; margin: 0 auto; }
 .faq-item {

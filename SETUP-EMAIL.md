@@ -46,5 +46,24 @@ The form is ready to send real registrations to your inbox. You just need a free
 Parent/guardian name, email, camper name, grade, program, the weeks chosen,
 number of weeks, weekly price, the estimated total, and any notes.
 
+## Send a confirmation copy to the parent (Autoresponse)
+
+The form already sends the parent's address to Formspree as the reply-to, so a
+confirmation can go straight back to them. To turn it on:
+
+1. In your Formspree dashboard, open your form → **Plugins** (or **Settings**) →
+   **Autoresponse**.
+2. Toggle it **on** and write a friendly message, for example:
+
+   > Thanks for registering for Infinite Potential Math: Kids Learning Camp! 🎉
+   > We received your sign-up and will email you soon to confirm the details and
+   > arrange payment. Questions? Just reply to this email.
+
+3. Save. Now every family gets an instant confirmation email after they submit.
+
+> Note: Autoresponse availability depends on your Formspree plan. If you don't
+> see the option on the free plan, you can still reply to any registration and
+> it will go straight to the parent (thanks to the reply-to we set up).
+
 > Until you paste in your endpoint, the **Confirm & Submit** button still shows
 > the friendly "You're all set!" message — it just doesn't email anyone yet.

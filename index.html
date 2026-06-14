@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=13" />
 </head>
 <body>
 
@@ -43,7 +43,6 @@
     </a>
     <nav class="nav-links">
       <a href="#about">About</a>
-      <a href="#puzzle">Puzzle</a>
       <a href="#team">Team</a>
       <a href="#achievements">Achievements</a>
       <a href="#schedule">Schedule</a>
@@ -99,20 +98,6 @@
         <div class="card-emoji">🎲</div>
         <h3>Games &amp; Puzzles</h3>
         <p>Brain teasers, math games, and hands-on challenges keep every day playful and full of "aha!" moments.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Try a Puzzle -->
-  <section id="puzzle" class="section puzzle">
-    <h2 class="section-title">Try a Puzzle! 🧩</h2>
-    <p class="section-lead">Get a taste of the fun — can you crack these brain-teasers?</p>
-    <div class="puzzle-card">
-      <p class="puzzle-q" id="puzzleQ">Loading a puzzle…</p>
-      <p class="puzzle-a" id="puzzleA" hidden></p>
-      <div class="puzzle-actions">
-        <button type="button" class="btn btn-ghost" id="puzzleReveal">Show Answer</button>
-        <button type="button" class="btn btn-primary" id="puzzleNext">New Puzzle →</button>
       </div>
     </div>
   </section>
@@ -230,12 +215,14 @@
   <section id="dates" class="section dates">
     <h2 class="section-title">Pick Your Weeks</h2>
     <p class="section-lead">Camp runs Monday through Friday. <strong>Odd weeks</strong> are for <strong>rising grades 4–6</strong>, and <strong>even weeks</strong> are for <strong>rising grades 2–3</strong>. Sign up for one week or all summer long!</p>
+    <p class="spots-banner">⏳ Spaces are limited — each week's small groups fill up fast, so register early to reserve your spot!</p>
+    <!-- Add  <span class="spot-tag">🔥 Filling fast</span>  to any week below as it gets close to full. -->
     <div class="weeks">
-      <div class="week"><span class="week-num">Week 1</span>Jun 14 – Jun 18<span class="week-grade grade-upper">Grades 4–6</span></div>
-      <div class="week"><span class="week-num">Week 2</span>Jun 21 – Jun 25<span class="week-grade grade-lower">Grades 2–3</span></div>
+      <div class="week"><span class="week-num">Week 1</span>Jun 14 – Jun 18<span class="week-grade grade-upper">Grades 4–6</span><span class="spot-tag">🔥 Filling fast</span></div>
+      <div class="week"><span class="week-num">Week 2</span>Jun 21 – Jun 25<span class="week-grade grade-lower">Grades 2–3</span><span class="spot-tag">🔥 Filling fast</span></div>
       <div class="week"><span class="week-num">Week 3</span>Jun 28 – Jul 2<span class="week-grade grade-upper">Grades 4–6</span></div>
       <div class="week"><span class="week-num">Week 4</span>Jul 5 – Jul 9<span class="week-grade grade-lower">Grades 2–3</span></div>
-      <div class="week"><span class="week-num">Week 5</span>Jul 12 – Jul 16<span class="week-grade grade-upper">Grades 4–6</span></div>
+      <div class="week"><span class="week-num">Week 5</span>Jul 12 – Jul 16<span class="week-grade grade-upper">Grades 4–6</span><span class="spot-tag">🔥 Filling fast</span></div>
       <div class="week"><span class="week-num">Week 6</span>Jul 19 – Jul 23<span class="week-grade grade-lower">Grades 2–3</span></div>
       <div class="week"><span class="week-num">Week 7</span>Jul 26 – Jul 30<span class="week-grade grade-upper">Grades 4–6</span></div>
       <div class="week"><span class="week-num">Week 8</span>Aug 2 – Aug 6<span class="week-grade grade-lower">Grades 2–3</span></div>
@@ -466,6 +453,6 @@
     <p class="footer-fine">© 2027 Infinite Potential Math: Kids Learning Camp. All rights reserved.</p>
   </footer>
 
-  <script src="script.js?v=12"></script>
+  <script src="script.js?v=13"></script>
 </body>
 </html>

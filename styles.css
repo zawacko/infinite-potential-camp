@@ -730,6 +730,22 @@ a { color: var(--purple); }
   .total-tag { flex-direction: column; text-align: center; }
 }
 
+/* ===== Confetti 🎉 ===== */
+.confetti-piece {
+  position: fixed;
+  top: -20px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(104vh) translateX(var(--drift, 0)) rotate(var(--spin, 360deg)); opacity: 1; }
+}
+
 /* ===== Gradual hover grow =====
    Cards smoothly scale up when hovered. Placed last so the hover
    transform reliably wins over the scroll-reveal end state. */

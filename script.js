@@ -154,6 +154,29 @@ editBtn.addEventListener('click', () => {
   scrollToRegister();
 });
 
+// Celebratory confetti burst 🎉
+function launchConfetti() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colors = ['#6c4ce0', '#ff5da2', '#ffc83d', '#2ec5b6', '#ff8a5c', '#4f33b3'];
+  const count = 110;
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const size = 6 + Math.random() * 8;
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.width = size + 'px';
+    piece.style.height = size * (0.4 + Math.random() * 0.6) + 'px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.setProperty('--drift', (Math.random() * 200 - 100) + 'px');
+    piece.style.setProperty('--spin', (Math.random() * 720 - 360) + 'deg');
+    piece.style.animationDuration = 2.4 + Math.random() * 1.6 + 's';
+    piece.style.animationDelay = Math.random() * 0.4 + 's';
+    if (Math.random() > 0.5) piece.style.borderRadius = '50%';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4600);
+  }
+}
+
 // Show the final "You're all set!" screen.
 function showDone(camper) {
   const done = document.createElement('div');
@@ -173,6 +196,7 @@ function showDone(camper) {
   reviewPanel.innerHTML = '';
   reviewPanel.append(done);
   scrollToRegister();
+  launchConfetti();
 }
 
 // Step 2 -> submit to Formspree (or show a demo message if not set up yet).

@@ -45,6 +45,10 @@ const totalAmount = document.getElementById('totalAmount');
 const editBtn = document.getElementById('editBtn');
 const confirmBtn = document.getElementById('confirmBtn');
 const registerSection = document.getElementById('register');
+const regType = document.getElementById('regType');
+const summerFields = document.getElementById('summerFields');
+const programSelect = document.getElementById('programSelect');
+const totalLabel = document.getElementById('totalLabel');
 
 // Holds the latest reviewed registration so Confirm can send it.
 let pendingData = null;
@@ -59,6 +63,18 @@ function scrollToRegister() {
   registerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// Show the summer-only fields only when "Summer Camp" is chosen.
+// (Summer is locked for now, so this stays on the Free Trial.)
+function updateRegType() {
+  const summer = regType && regType.value === 'summer';
+  if (summerFields) summerFields.hidden = !summer;
+  if (programSelect) programSelect.disabled = !summer;
+}
+if (regType) {
+  regType.addEventListener('change', updateRegType);
+  updateRegType();
+}
+
 // Step 1 -> Step 2: validate, then show the review screen.
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -70,36 +86,10 @@ form.addEventListener('submit', (e) => {
     return;
   }
 
-  const weekCount = selectedWeekCount();
-  if (weekCount === 0) {
-    msg.style.color = '#ff5da2';
-    msg.textContent = 'Please pick at least one week. 📅';
-    return;
-  }
   msg.textContent = '';
+  const isSummer = regType && regType.value === 'summer';
 
-  // Listed weekly price (pulled from the chosen program).
-  const program = form.program.value;
-  const priceMatch = program.match(/\$(\d+)/);
-  const listedWeekly = priceMatch ? parseInt(priceMatch[1], 10) : 0;
-
-  // Family discount code: 25% off + free lunch when valid.
-  const codeEntered = form.discountCode.value.trim();
-  const familyApplied = codeEntered.toUpperCase() === FAMILY_CODE;
-
-  // With the family discount, lunch is free — so charge the base (no-lunch)
-  // rate, then take 25% off.
-  const baseWeekly = /Full Day/i.test(program) ? 225 : 150;
-  const weekly = familyApplied ? baseWeekly * 0.75 : listedWeekly;
-  const total = weekly * weekCount;
-
-  let codeStatus = '';
-  if (familyApplied) {
-    codeStatus = `✅ ${FAMILY_CODE} applied — 25% off + free lunch`;
-  } else if (codeEntered) {
-    codeStatus = `⚠️ "${codeEntered}" isn't a valid code — no discount applied`;
-  }
-
+  // Base info shared by both registration types.
   pendingData = {
     // _replyto lets Formspree send the auto-confirmation to the parent
     // (enable "Autoresponse" in your Formspree dashboard — see SETUP-EMAIL.md).
@@ -108,26 +98,71 @@ form.addEventListener('submit', (e) => {
     Email: form.email.value,
     Camper: form.camper.value,
     Grade: form.grade.value,
-    Program: program,
-    Weeks: weeksField.value,
-    'Number of weeks': weekCount,
-    'Weekly price': money(weekly),
-    'Family discount code': codeEntered || '—',
-    'Discount applied': familyApplied ? 'Yes — 25% off + free lunch' : 'No',
-    'Estimated total': money(total),
-    Notes: form.notes.value.trim() || '—',
-    _subject: `Camp registration: ${form.camper.value} (${money(total)})`,
   };
-
   const rows = [
     ['Parent / Guardian', form.parent.value],
     ['Email', form.email.value],
     ['Camper', form.camper.value],
     ['Grade', form.grade.value],
-    ['Program', program],
-    ['Weeks', `${weeksField.value}  ·  ${weekCount} week${weekCount > 1 ? 's' : ''} × ${money(weekly)}`],
   ];
-  if (codeEntered) rows.push(['Family discount code', `${codeEntered}  ·  ${codeStatus}`]);
+
+  if (isSummer) {
+    const weekCount = selectedWeekCount();
+    if (weekCount === 0) {
+      msg.style.color = '#ff5da2';
+      msg.textContent = 'Please pick at least one week. 📅';
+      return;
+    }
+    if (!form.program.value) {
+      msg.style.color = '#ff5da2';
+      msg.textContent = 'Please choose a program. 📝';
+      return;
+    }
+
+    const program = form.program.value;
+    const priceMatch = program.match(/\$(\d+)/);
+    const listedWeekly = priceMatch ? parseInt(priceMatch[1], 10) : 0;
+    const codeEntered = form.discountCode.value.trim();
+    const familyApplied = codeEntered.toUpperCase() === FAMILY_CODE;
+    const baseWeekly = /Full Day/i.test(program) ? 225 : 150;
+    const weekly = familyApplied ? baseWeekly * 0.75 : listedWeekly;
+    const total = weekly * weekCount;
+
+    let codeStatus = '';
+    if (familyApplied) codeStatus = `✅ ${FAMILY_CODE} applied — 25% off + free lunch`;
+    else if (codeEntered) codeStatus = `⚠️ "${codeEntered}" isn't a valid code — no discount applied`;
+
+    Object.assign(pendingData, {
+      'Registering for': 'Summer 2027 Camp',
+      Program: program,
+      Weeks: weeksField.value,
+      'Number of weeks': weekCount,
+      'Weekly price': money(weekly),
+      'Family discount code': codeEntered || '—',
+      'Discount applied': familyApplied ? 'Yes — 25% off + free lunch' : 'No',
+      'Estimated total': money(total),
+    });
+    rows.push(['Registering for', 'Summer 2027 Camp']);
+    rows.push(['Program', program]);
+    rows.push(['Weeks', `${weeksField.value}  ·  ${weekCount} week${weekCount > 1 ? 's' : ''} × ${money(weekly)}`]);
+    if (codeEntered) rows.push(['Family discount code', `${codeEntered}  ·  ${codeStatus}`]);
+
+    if (totalLabel) totalLabel.textContent = 'Estimated Total';
+    totalAmount.textContent = money(total);
+  } else {
+    // Free trial — no program, weeks, or cost.
+    Object.assign(pendingData, {
+      'Registering for': 'Free Trial Camp — Wed, Nov 11, 2026 (Veterans Day)',
+      Cost: 'Free ($10 donation optional)',
+    });
+    rows.push(['Registering for', 'Free Trial Camp — Wed, Nov 11, 2026 (Veterans Day)']);
+
+    if (totalLabel) totalLabel.textContent = 'Cost';
+    totalAmount.textContent = 'Free';
+  }
+
+  pendingData.Notes = form.notes.value.trim() || '—';
+  pendingData._subject = `${isSummer ? 'Summer camp' : 'Free trial'} registration: ${form.camper.value}`;
   if (form.notes.value.trim()) rows.push(['Notes', form.notes.value.trim()]);
 
   // Build the review list safely with textContent (no HTML injection).
@@ -139,8 +174,6 @@ form.addEventListener('submit', (e) => {
     dd.textContent = value;
     reviewList.append(dt, dd);
   });
-
-  totalAmount.textContent = money(total);
 
   form.hidden = true;
   reviewPanel.hidden = false;

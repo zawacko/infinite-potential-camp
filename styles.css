@@ -258,6 +258,18 @@ a { color: var(--purple); }
   color: #5a527d;
 }
 
+/* ===== Welcome / intro ===== */
+.welcome-text {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #4a4470;
+  font-size: 1.15rem;
+  line-height: 1.85;
+}
+.welcome-text p { margin: 0 0 1.1rem; }
+.welcome-text p:last-child { margin-bottom: 0; }
+.welcome-text strong { color: var(--purple); }
+
 /* ===== About cards ===== */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
 .card {

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Infinite Potential Math: Kids Learning Camp</title>
+  <meta name="description" content="Register your camper for the free trial day at Infinite Potential Math: Kids Learning Camp." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=19" />
+</head>
+<body>
+
+  <!-- Floating math symbols -->
+  <div class="floaties" aria-hidden="true">
+    <span>+</span><span>÷</span><span>π</span><span>×</span><span>√</span>
+    <span>%</span><span>∞</span><span>=</span><span>−</span><span>Σ</span>
+    <span>7</span><span>3</span><span>42</span><span>9</span><span>5</span>
+  </div>
+
+  <!-- Navbar -->
+  <header class="nav">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">∞</span>
+      <span class="brand-text">Infinite Potential Math <small>Kids Learning Camp</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#trial">Free Trial</a>
+      <a href="about.html">About</a>
+      <a href="info.html">Camp Info</a>
+      <a href="faq.html">FAQ</a>
+      <a href="register.html" class="nav-cta active">Register</a>
+    </nav>
+  </header>
+
+  <!-- Announcement banner -->
+  <a class="announce" href="index.html#trial">🎉 FREE Trial Camp on Veterans Day — Wed, Nov 11, 2026! Come try us out →</a>
+
+  <!-- Register -->
+  <section id="register" class="section register page-top">
+    <h2 class="section-title">Register Your Camper</h2>
+    <p class="section-lead">Sign up for our <strong>FREE Trial Camp</strong> on Veterans Day! Summer 2027 registration opens soon. 🎉</p>
+
+    <form class="reg-form" id="regForm" novalidate>
+      <div class="form-row">
+        <label>
+          Parent / Guardian Name
+          <input type="text" name="parent" required placeholder="Jane Doe" />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required placeholder="jane@example.com" />
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          Camper's Name
+          <input type="text" name="camper" required placeholder="Alex Doe" />
+        </label>
+        <label>
+          Grade in Fall 2027
+          <select name="grade" required>
+            <option value="" disabled selected>Choose a grade</option>
+            <option>Rising 2nd grade</option>
+            <option>Rising 3rd grade</option>
+            <option>Rising 4th grade</option>
+            <option>Rising 5th grade</option>
+            <option>Rising 6th grade</option>
+          </select>
+        </label>
+      </div>
+      <label class="full">
+        Registering for
+        <select name="regType" id="regType" required>
+          <option value="trial" selected>Free Trial Camp — Wed, Nov 11, 2026 (Free!)</option>
+          <option value="summer" disabled>Summer 2027 Camp — registration opens soon 🔒</option>
+        </select>
+      </label>
+
+      <div id="summerFields" hidden>
+        <label class="full">
+          Program
+          <select name="program" id="programSelect">
+            <option value="" disabled selected>Full day or half day?</option>
+            <option>Full Day — $225/week</option>
+            <option>Full Day + Lunch — $270/week</option>
+            <option>Half Day — $150/week</option>
+          </select>
+        </label>
+
+        <fieldset class="weeks-picker">
+          <legend>Which weeks? <span>Odd weeks = grades 4–6 · even weeks = grades 2–3</span></legend>
+          <div class="week-buttons" id="weekButtons">
+            <button type="button" class="week-btn" data-week="Week 1 (Jun 14–18, Grades 4–6)">Week 1<small>Jun 14–18</small><em class="btn-grade grade-upper">Grades 4–6</em></button>
+            <button type="button" class="week-btn" data-week="Week 2 (Jun 21–25, Grades 2–3)">Week 2<small>Jun 21–25</small><em class="btn-grade grade-lower">Grades 2–3</em></button>
+            <button type="button" class="week-btn" data-week="Week 3 (Jun 28–Jul 2, Grades 4–6)">Week 3<small>Jun 28–Jul 2</small><em class="btn-grade grade-upper">Grades 4–6</em></button>
+            <button type="button" class="week-btn" data-week="Week 4 (Jul 5–9, Grades 2–3)">Week 4<small>Jul 5–9</small><em class="btn-grade grade-lower">Grades 2–3</em></button>
+            <button type="button" class="week-btn" data-week="Week 5 (Jul 12–16, Grades 4–6)">Week 5<small>Jul 12–16</small><em class="btn-grade grade-upper">Grades 4–6</em></button>
+            <button type="button" class="week-btn" data-week="Week 6 (Jul 19–23, Grades 2–3)">Week 6<small>Jul 19–23</small><em class="btn-grade grade-lower">Grades 2–3</em></button>
+            <button type="button" class="week-btn" data-week="Week 7 (Jul 26–30, Grades 4–6)">Week 7<small>Jul 26–30</small><em class="btn-grade grade-upper">Grades 4–6</em></button>
+            <button type="button" class="week-btn" data-week="Week 8 (Aug 2–6, Grades 2–3)">Week 8<small>Aug 2–6</small><em class="btn-grade grade-lower">Grades 2–3</em></button>
+          </div>
+          <input type="hidden" name="weeks" id="weeksField" />
+        </fieldset>
+        <label class="full">
+          Family discount code <span class="opt-label">(optional)</span>
+          <input type="text" name="discountCode" placeholder="Have a family discount code? Enter it here" />
+        </label>
+      </div>
+      <label class="full">
+        Anything we should know? (allergies, questions, etc.)
+        <textarea name="notes" rows="3" placeholder="Optional"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary btn-big">Next Step</button>
+      <p class="form-msg" id="formMsg" role="status"></p>
+    </form>
+
+    <!-- Step 2: review -->
+    <div class="review-panel" id="reviewPanel" hidden>
+      <h3 class="review-title">Check Your Information ✅</h3>
+      <p class="review-sub">Please make sure everything looks right before you submit.</p>
+      <dl class="review-list" id="reviewList"></dl>
+      <div class="total-tag">
+        <span id="totalLabel">Estimated Total</span>
+        <strong id="totalAmount">$0</strong>
+      </div>
+      <p class="total-note">Final price may change with the family discount — we'll confirm everything by email.</p>
+      <div class="review-actions">
+        <button type="button" class="btn btn-ghost" id="editBtn">← Edit</button>
+        <button type="button" class="btn btn-primary" id="confirmBtn">Confirm &amp; Submit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-brand"><span class="brand-icon">∞</span> Infinite Potential Math: Kids Learning Camp</div>
+    <p>Made with ❤️ and lots of math by five middle schoolers.</p>
+    <p class="footer-contact">Questions? Email us at <a href="mailto:zach.s.cho@gmail.com">zach.s.cho@gmail.com</a></p>
+    <p class="footer-fine">© 2027 Infinite Potential Math: Kids Learning Camp. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js?v=19"></script>
+</body>
+</html>

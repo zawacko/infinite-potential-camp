@@ -103,6 +103,9 @@ a { color: var(--purple); }
 .nav-links { display: flex; align-items: center; gap: 1.4rem; }
 .nav-links a { text-decoration: none; color: var(--ink); font-weight: 700; }
 .nav-links a:hover { color: var(--purple); }
+.nav-links a.active { color: var(--purple); }
+.nav-links a.nav-cta.active { color: #fff; }
+.page-top { padding-top: 2.5rem; }
 .nav-cta {
   background: var(--purple);
   color: #fff !important;

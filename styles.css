@@ -476,7 +476,19 @@ a { color: var(--purple); }
 }
 .week-btn.is-selected .btn-grade { background: rgba(255, 255, 255, 0.25); color: #fff; }
 
-/* ===== What to Bring ===== */
+/* ===== What to Bring (bullet list) ===== */
+.bring-list {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-left: 1.3rem;
+  color: var(--ink);
+  font-size: 1.12rem;
+  line-height: 1.7;
+}
+.bring-list li { margin-bottom: 0.8rem; }
+.bring-list strong { color: var(--purple); }
+
+/* ===== What to Bring (legacy cards, unused) ===== */
 .bring-grid {
   display: flex;
   flex-wrap: wrap;

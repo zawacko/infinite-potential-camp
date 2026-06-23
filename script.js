@@ -49,6 +49,7 @@ const regType = document.getElementById('regType');
 const summerFields = document.getElementById('summerFields');
 const programSelect = document.getElementById('programSelect');
 const totalLabel = document.getElementById('totalLabel');
+const totalNote = document.getElementById('totalNote');
 
 // Holds the latest reviewed registration so Confirm can send it.
 let pendingData = null;
@@ -148,6 +149,7 @@ form.addEventListener('submit', (e) => {
     if (codeEntered) rows.push(['Family discount code', `${codeEntered}  ·  ${codeStatus}`]);
 
     if (totalLabel) totalLabel.textContent = 'Estimated Total';
+    if (totalNote) totalNote.textContent = "Final price may change with the family discount — we'll confirm everything by email.";
     totalAmount.textContent = money(total);
   } else {
     // Free trial — no program, weeks, or cost.
@@ -158,6 +160,7 @@ form.addEventListener('submit', (e) => {
     rows.push(['Registering for', 'Free Trial Camp — Wed, Nov 11, 2026 (Veterans Day)']);
 
     if (totalLabel) totalLabel.textContent = 'Cost';
+    if (totalNote) totalNote.textContent = 'Your spot is free — a $10 donation is welcome but completely optional. See you on Veterans Day!';
     totalAmount.textContent = 'Free';
   }
 
@@ -223,7 +226,7 @@ function showDone(camper) {
   heading.textContent = "You're all set!";
 
   const text = document.createElement('p');
-  text.textContent = `Thanks! We received the registration for ${camper} and will email you to confirm the details and arrange payment.`;
+  text.textContent = `Thanks! ${camper} is all signed up for our FREE Trial Camp on Wednesday, November 11 (Veterans Day) at 1728 Joel Way. We can't wait to see you there at 9:00 AM — check your email for all the details!`;
 
   done.append(emoji, heading, text);
   reviewPanel.innerHTML = '';

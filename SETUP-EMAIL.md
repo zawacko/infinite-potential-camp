@@ -53,11 +53,27 @@ confirmation can go straight back to them. To turn it on:
 
 1. In your Formspree dashboard, open your form → **Plugins** (or **Settings**) →
    **Autoresponse**.
-2. Toggle it **on** and write a friendly message, for example:
+2. Toggle it **on**, set the **subject** to something like
+   `You're all set for our Free Trial Camp! 🎉`, and paste this message:
 
-   > Thanks for registering for Infinite Potential Math: Kids Learning Camp! 🎉
-   > We received your sign-up and will email you soon to confirm the details and
-   > arrange payment. Questions? Just reply to this email.
+   > Hello!
+   >
+   > Thank you for registering for the Infinite Potential Math free trial camp —
+   > you're all set! 🎉
+   >
+   > Here are the details:
+   > • Date: Wednesday, November 11, 2026 (Veterans Day)
+   > • Time: 9:00 AM – 3:30 PM
+   > • Location: 1728 Joel Way
+   > • Cost: Free! (a $10 donation is appreciated but completely optional)
+   >
+   > Please bring pencils, an eraser, a ruler, and a water bottle — and a computer
+   > or tablet is strongly recommended. Get ready for a day packed with math,
+   > games, and fun!
+   >
+   > If you have any questions, just reply to this email. See you on Veterans Day!
+   >
+   > — The Infinite Potential Math Team
 
 3. Save. Now every family gets an instant confirmation email after they submit.
 

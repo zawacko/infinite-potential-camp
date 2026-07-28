@@ -152,12 +152,19 @@ form.addEventListener('submit', (e) => {
     if (totalNote) totalNote.textContent = "Final price may change with the family discount — we'll confirm everything by email.";
     totalAmount.textContent = money(total);
   } else {
-    // Free trial — no program, weeks, or cost.
+    // Free trial — session is set by grade: 2–3 = morning, 4–6 = afternoon.
+    const isMorning = /2nd|3rd/.test(form.grade.value);
+    const session = isMorning
+      ? 'Morning session · 9:00 AM – 12:00 PM (Grades 2–3)'
+      : 'Afternoon session · 1:00 PM – 4:00 PM (Grades 4–6)';
+
     Object.assign(pendingData, {
       'Registering for': 'Free Trial Camp — Wed, Nov 11, 2026 (Veterans Day)',
+      Session: session,
       Cost: 'Free ($10 donation optional)',
     });
     rows.push(['Registering for', 'Free Trial Camp — Wed, Nov 11, 2026 (Veterans Day)']);
+    rows.push(['Session', session]);
 
     if (totalLabel) totalLabel.textContent = 'Cost';
     if (totalNote) totalNote.textContent = 'Your spot is free — a $10 donation is welcome but completely optional. See you on Veterans Day!';
@@ -225,8 +232,10 @@ function showDone(camper) {
   const heading = document.createElement('h3');
   heading.textContent = "You're all set!";
 
+  const isMorning = /2nd|3rd/.test(form.grade.value);
+  const slot = isMorning ? 'the morning session (9:00 AM – 12:00 PM)' : 'the afternoon session (1:00 PM – 4:00 PM)';
   const text = document.createElement('p');
-  text.textContent = `Thanks! ${camper} is all signed up for our FREE Trial Camp on Wednesday, November 11 (Veterans Day) at 1728 Joel Way. We can't wait to see you there at 9:00 AM — check your email for all the details!`;
+  text.textContent = `Thanks! ${camper} is all signed up for ${slot} at our FREE Trial Camp on Wednesday, November 11 (Veterans Day), 1728 Joel Way, Los Altos. We can't wait to see you there — check your email for all the details!`;
 
   done.append(emoji, heading, text);
   reviewPanel.innerHTML = '';

@@ -835,6 +835,19 @@ a { color: var(--purple); }
 .cc-body h3 { margin: 0 0 0.35rem; color: #fff; font-size: 1.5rem; }
 .cc-body p { margin: 0; color: #e7e0ff; line-height: 1.55; }
 .cc-body strong { color: var(--yellow); }
+.cc-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background: #fff;
+  color: var(--purple);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 999px;
+  transition: transform 0.15s ease;
+}
+.cc-btn:hover { transform: translateY(-3px); }
 @media (max-width: 560px) {
   .cc-card { flex-direction: column; text-align: center; }
 }

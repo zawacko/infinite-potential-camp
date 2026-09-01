@@ -809,6 +809,36 @@ a { color: var(--purple); }
   .total-tag { flex-direction: column; text-align: center; }
 }
 
+/* ===== Calc-Clash callout ===== */
+.cc-card {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 1.8rem 2rem;
+  box-shadow: var(--shadow);
+}
+.cc-emoji {
+  font-size: 3.4rem;
+  flex-shrink: 0;
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+}
+.cc-body h3 { margin: 0 0 0.35rem; color: #fff; font-size: 1.5rem; }
+.cc-body p { margin: 0; color: #e7e0ff; line-height: 1.55; }
+.cc-body strong { color: var(--yellow); }
+@media (max-width: 560px) {
+  .cc-card { flex-direction: column; text-align: center; }
+}
+
 /* ===== Back-to-top button ===== */
 .to-top {
   position: fixed;

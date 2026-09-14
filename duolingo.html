@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MathWorld — Learn Math the Fun Way!</title>
+<meta name="description" content="MathWorld — a game-style math learning game for Infinite Potential Math campers. Pick your grade, earn coins, climb the leaderboard, and level up your math!" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --green:#58cc02; --green-dark:#58a700; --green-glow:#d7ffb8;
+    --blue:#1cb0f6; --blue-dark:#1899d6;
+    --purple:#6c4ce0; --purple-dark:#4f33b3;
+    --pink:#ff5da2; --pink-dark:#e63e88;
+    --orange:#ff9600; --orange-dark:#e07d00;
+    --teal:#2ec5b6; --teal-dark:#1fa596;
+    --red:#ff4b4b; --red-dark:#ea2b2b;
+    --gold:#ffc800; --coin:#ffb700;
+    --ink:#3c3c3c; --muted:#afafaf; --line:#e5e5e5;
+    --paper:#fff; --wash:#f7f7f7;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [hidden]{display:none!important}
+  /* custom image icons (replace emoji) */
+  .sprite{width:1em;height:1em;object-fit:contain;vertical-align:-0.15em}
+  .owl-brand{width:1.7rem;height:1.7rem;object-fit:contain;vertical-align:middle}
+  .auth-logo img{width:92px;height:92px;object-fit:contain}
+  .c-emoji .sprite,.cb-emoji .sprite{width:82%;height:82%}
+  .lb-row .av .sprite{width:92%;height:92%}
+  .mascot .sprite{width:2.6rem;height:2.6rem;vertical-align:top}
+  .node .sprite{width:2.1rem;height:2.1rem;vertical-align:middle}
+  .unit-head .book .sprite{width:1.6rem;height:1.6rem;vertical-align:middle}
+  .t-ico .sprite{width:1.55rem;height:1.55rem;display:block}
+  .picker-head h1 .sprite,.lb-head h1 .sprite{width:1.1em;height:1.1em;margin-right:.15em}
+  .stat .sprite{width:1.4rem;height:1.4rem;vertical-align:middle}
+  .node-crown .sprite{width:1.5rem;height:1.5rem}
+  .prof-av.img{background:none;box-shadow:none}
+  .prof-av .sprite{width:100%;height:100%}
+  .amt .sprite,.lesson-coins .sprite,.r-val .sprite{width:1.15em;height:1.15em;vertical-align:-0.2em}
+  .rename .sprite{width:1.1em;height:1.1em;vertical-align:-0.2em}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;
+    color:var(--ink); background:var(--paper);
+    line-height:1.5; overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Baloo 2',cursive;line-height:1.1;margin:0}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+  /* ============ Top bar ============ */
+  .topbar{
+    position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;gap:14px;
+    padding:14px 18px; background:var(--paper);
+    border-bottom:2px solid var(--line);
+  }
+  .home-link{
+    display:flex;align-items:center;gap:6px;
+    font-family:'Baloo 2',cursive;font-weight:800;font-size:1.15rem;
+    color:var(--green);text-decoration:none;margin-right:auto;
+  }
+  .home-link .owl{font-size:1.4rem}
+  .stat{display:flex;align-items:center;gap:6px;font-weight:800;font-size:1.05rem}
+  .stat.coins{color:var(--coin)}
+  .stat .ico{font-size:1.25rem;line-height:1}
+  .back-site{font-size:1.05rem;font-weight:800;color:var(--muted);text-decoration:none}
+
+  /* ============ App shell ============ */
+  .app{max-width:520px;margin:0 auto;padding:8px 18px 110px}
+  .screen{display:none;animation:fade .3s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ============ Course picker ============ */
+  .picker-head{text-align:center;margin:24px 0 6px}
+  .picker-head h1{font-size:1.9rem}
+  .picker-head p{color:var(--muted);font-weight:700;margin:4px 0 0}
+  .course-grid{display:grid;gap:14px;margin-top:22px}
+  .course-card{
+    display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+    background:var(--paper);border:2px solid var(--line);border-bottom-width:5px;
+    border-radius:18px;padding:16px 18px;transition:transform .1s, background .15s;
+  }
+  .course-card:hover{background:var(--wash)}
+  .course-card:active{transform:translateY(3px)}
+  .course-card .c-emoji{
+    width:58px;height:58px;flex:0 0 58px;border-radius:16px;display:flex;
+    align-items:center;justify-content:center;font-size:2rem;color:#fff;
+  }
+  .course-card .c-name{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.2rem}
+  .course-card .c-sub{color:var(--muted);font-weight:700;font-size:.85rem}
+  .course-card .c-prog{margin-left:auto;color:var(--muted);font-weight:800;font-size:.85rem;text-align:right}
+  .course-card .c-prog b{display:block;font-size:1.15rem;color:var(--green)}
+
+  /* ============ Path (learn) ============ */
+  .unit-head{
+    color:#fff;border-radius:16px;padding:16px 20px;
+    display:flex;justify-content:space-between;align-items:center;margin:18px 0 8px;
+  }
+  .unit-head h2{font-size:1.25rem}
+  .unit-head p{margin:2px 0 0;font-weight:700;opacity:.9;font-size:.85rem}
+  .unit-head .book{font-size:1.6rem}
+
+  .course-bar{
+    display:flex;align-items:center;gap:12px;margin:16px 0 2px;
+    background:var(--wash);border-radius:14px;padding:10px 14px;
+  }
+  .course-bar .cb-emoji{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff}
+  .course-bar .cb-name{font-family:'Baloo 2',cursive;font-weight:800}
+  .course-bar .cb-sub{color:var(--muted);font-weight:700;font-size:.8rem}
+  .course-bar .cb-change{margin-left:auto;font-weight:800;font-size:.82rem;color:var(--blue);text-decoration:underline}
+
+  .path{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 0}
+  .node-wrap{position:relative;transition:transform .12s}
+  .node-wrap:active{transform:translateY(3px)}
+  .node{
+    width:76px;height:70px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;
+    border:none;transition:transform .12s;
+  }
+  .node.done{background:var(--gold);box-shadow:0 6px 0 #d9a800;color:#fff}
+  .node.current{background:var(--green);box-shadow:0 6px 0 var(--green-dark);color:#fff}
+  .node.locked{background:#e5e5e5;box-shadow:0 6px 0 #cfcfcf;color:#b3b3b3}
+  .node.current::after{
+    content:"START";position:absolute;top:-34px;left:50%;transform:translateX(-50%);
+    background:#fff;color:var(--green);font-family:'Baloo 2',cursive;font-weight:800;
+    font-size:.72rem;padding:5px 12px;border-radius:12px;border:2px solid var(--line);
+    box-shadow:0 2px 0 var(--line);white-space:nowrap;animation:bob 1.4s ease-in-out infinite;
+  }
+  .node.current::before{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    border-left:7px solid transparent;border-right:7px solid transparent;
+    border-top:7px solid #fff;top:-8px;z-index:2;
+  }
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+  .node-crown{position:absolute;top:-8px;right:-4px;font-size:1rem}
+  .mascot{position:absolute;font-size:2.6rem;top:6px;animation:float 3s ease-in-out infinite;pointer-events:none}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
+
+  /* ============ Lesson ============ */
+  .lesson-top{display:flex;align-items:center;gap:14px;margin:16px 0 26px}
+  .quit{font-size:1.5rem;color:var(--muted);font-weight:900;line-height:1}
+  .pbar{flex:1;height:16px;background:var(--line);border-radius:99px;overflow:hidden}
+  .pfill{height:100%;background:var(--green);border-radius:99px;width:0;transition:width .35s ease}
+  .lesson-coins{display:flex;align-items:center;gap:4px;color:var(--coin);font-weight:800}
+
+  .q-kicker{font-family:'Baloo 2',cursive;font-size:1.55rem;font-weight:800;margin-bottom:18px}
+  .q-card{background:var(--wash);border:2px solid var(--line);border-radius:18px;padding:26px 20px;text-align:center;margin-bottom:24px}
+  .q-text{font-family:'Baloo 2',cursive;font-size:2.4rem;font-weight:800;color:var(--purple)}
+  .q-sub{color:var(--muted);font-weight:700;margin-top:6px}
+
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .choice{
+    background:var(--paper);border:2px solid var(--line);border-bottom-width:4px;
+    border-radius:14px;padding:18px;font-size:1.35rem;font-weight:800;color:var(--ink);
+    transition:transform .08s, background .15s;
+  }
+  .choice:hover{background:var(--wash)}
+  .choice:active{transform:translateY(2px)}
+  .choice.sel{border-color:var(--blue);background:#ddf4ff;color:var(--blue-dark)}
+  .choice.correct{border-color:var(--green);background:var(--green-glow);color:var(--green-dark)}
+  .choice.wrong{border-color:var(--red);background:#ffdfe0;color:var(--red-dark)}
+  .choice:disabled{cursor:default}
+  .type-in{
+    width:100%;padding:16px;font-size:1.5rem;font-weight:800;text-align:center;
+    border:2px solid var(--line);border-radius:14px;font-family:'Baloo 2',cursive;color:var(--purple);
+  }
+  .type-in:focus{outline:none;border-color:var(--blue)}
+
+  .foot{
+    position:fixed;left:0;right:0;bottom:0;background:var(--paper);
+    border-top:2px solid var(--line);padding:16px 18px;z-index:16;
+    transition:background .2s, border-color .2s;
+  }
+  .foot-inner{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:16px}
+  .foot-msg{flex:1;display:flex;align-items:center;gap:12px;font-family:'Baloo 2',cursive;font-weight:800;font-size:1.2rem}
+  .foot-emoji{font-size:2rem}
+  .btn{
+    font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;letter-spacing:.5px;
+    color:#fff;background:var(--green);box-shadow:0 4px 0 var(--green-dark);
+    border-radius:14px;padding:15px 28px;text-transform:uppercase;transition:transform .08s, filter .15s;white-space:nowrap;
+  }
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--green-dark)}
+  .btn.grey{background:var(--line);color:var(--muted);box-shadow:0 4px 0 #cfcfcf;pointer-events:none}
+  .btn.red{background:var(--red);box-shadow:0 4px 0 var(--red-dark)}
+  .btn.wide{width:100%;text-align:center}
+  .foot.ok{background:var(--green-glow)} .foot.ok .foot-msg{color:var(--green-dark)}
+  .foot.no{background:#ffdfe0} .foot.no .foot-msg{color:var(--red-dark)}
+
+  /* ============ Complete ============ */
+  .complete{text-align:center;padding:40px 10px}
+  .complete .big{font-size:4rem;animation:pop .5s ease}
+  @keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .complete h1{color:var(--gold);font-size:2.2rem;margin:10px 0 4px;-webkit-text-stroke:1px #e0a800}
+  .complete .tag{color:var(--muted);font-weight:800;margin-bottom:26px}
+  .reward-row{display:flex;gap:14px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+  .reward{border:2px solid var(--gold);border-radius:14px;overflow:hidden;min-width:120px}
+  .reward.speed{border-color:var(--blue)}
+  .reward .r-head{background:var(--gold);color:#fff;font-family:'Baloo 2',cursive;font-weight:800;padding:4px;font-size:.8rem;letter-spacing:1px}
+  .reward.speed .r-head{background:var(--blue)}
+  .reward .r-val{padding:12px;font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;display:flex;align-items:center;justify-content:center;gap:6px}
+  .reward.coins .r-val{color:var(--coin)} .reward.speed .r-val{color:var(--blue)}
+
+  /* ============ Leaderboard ============ */
+  .lb-head{text-align:center;margin:22px 0 4px}
+  .lb-head h1{font-size:1.8rem;color:var(--blue)}
+  .lb-head p{color:var(--muted);font-weight:700;margin:4px 0 0}
+  .lb-list{margin-top:18px;display:flex;flex-direction:column;gap:2px}
+  .lb-row{
+    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;
+    font-weight:800;transition:background .15s;
+  }
+  .lb-row .rank{width:28px;text-align:center;font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--muted)}
+  .lb-row .rank.medal{font-size:1.4rem}
+  .lb-row .av{width:40px;height:40px;flex:0 0 40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff}
+  .lb-row .who{flex:1}
+  .lb-row .amt{color:var(--coin);display:flex;align-items:center;gap:5px}
+  .lb-row.you{background:#fff7dd;border:2px solid var(--gold)}
+  .lb-row.you .who{color:var(--ink)}
+  .promo-line{
+    display:flex;align-items:center;gap:10px;color:var(--green-dark);
+    font-family:'Baloo 2',cursive;font-weight:800;font-size:.8rem;letter-spacing:1px;
+    text-transform:uppercase;margin:8px 2px;
+  }
+  .promo-line::before,.promo-line::after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--green) 0 8px,transparent 8px 14px)}
+  .rename{display:block;margin:20px auto 0;background:none;color:var(--blue);font-weight:800;font-size:.85rem;text-decoration:underline}
+
+  /* ============ Bottom nav ============ */
+  .botnav{
+    position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--paper);
+    border-top:2px solid var(--line);display:flex;
+  }
+  .botnav .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:10px 0 12px;font-weight:800;font-size:.72rem;color:var(--muted);
+    border-top:3px solid transparent;margin-top:-2px;
+  }
+  .botnav .tab .t-ico{font-size:1.5rem}
+  .botnav .tab.on{color:var(--green);border-top-color:var(--green)}
+
+  /* ============ Auth ============ */
+  .auth-wrap{max-width:400px;margin:0 auto;padding:28px 4px 40px;text-align:center}
+  .auth-logo{font-size:3.4rem}
+  .auth-title{font-size:2rem;color:var(--green);margin-top:6px}
+  .auth-sub{color:var(--muted);font-weight:700;margin:6px 0 22px}
+  .auth-tabs{display:flex;background:var(--wash);border-radius:12px;padding:4px;margin-bottom:20px}
+  .auth-tab{flex:1;padding:10px;border-radius:9px;font-family:'Baloo 2',cursive;font-weight:800;color:var(--muted)}
+  .auth-tab.on{background:var(--paper);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+  .auth-form{text-align:left}
+  .fld{display:block;margin-bottom:14px}
+  .fld span{display:block;font-weight:800;font-size:.82rem;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  .fld input{width:100%;padding:14px;font-size:1.05rem;font-weight:700;border:2px solid var(--line);border-radius:12px;font-family:inherit;color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--blue)}
+  .auth-err{background:#ffdfe0;color:var(--red-dark);font-weight:800;padding:10px 14px;border-radius:10px;font-size:.9rem;margin:0 0 14px}
+  .auth-note{color:var(--muted);font-weight:700;font-size:.8rem;text-align:center;margin:14px 0}
+  .auth-guest{display:block;margin:6px auto 0;background:none;color:var(--blue);font-weight:800;font-size:.9rem;text-decoration:underline}
+
+  /* ============ Profile ============ */
+  .prof-card{text-align:center;padding:28px 0 8px}
+  .prof-av{width:96px;height:96px;margin:0 auto;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:3rem;box-shadow:0 4px 0 #d9a800}
+  .prof-name{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.7rem;margin-top:14px}
+  .prof-user{color:var(--muted);font-weight:700;font-size:.9rem}
+  .prof-stats{display:flex;gap:14px;justify-content:center;margin:22px 0}
+  .prof-stat{background:var(--wash);border-radius:14px;padding:14px 22px;min-width:96px}
+  .prof-stat b{display:block;font-family:'Baloo 2',cursive;font-size:1.6rem}
+  .prof-stat.coins b{color:var(--coin)} .prof-stat.stars b{color:var(--gold)} .prof-stat.done b{color:var(--green)}
+  .prof-stat span{color:var(--muted);font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+  .prof-actions{max-width:340px;margin:10px auto 0;display:flex;flex-direction:column;gap:10px}
+  .prof-btn{padding:14px;border-radius:12px;font-family:'Baloo 2',cursive;font-weight:800;border:2px solid var(--line);border-bottom-width:4px;background:var(--paper);color:var(--ink)}
+  .prof-btn:active{transform:translateY(2px)}
+  .prof-btn.logout{color:var(--red);border-color:#ffd0d0}
+  .prof-guest{background:#fff7dd;border:2px solid var(--gold);border-radius:14px;padding:16px;margin:0 auto 16px;max-width:340px;font-weight:700;color:#7a5c00}
+
+  .toast{
+    position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-20px);
+    background:var(--ink);color:#fff;font-weight:800;padding:10px 18px;border-radius:99px;
+    opacity:0;transition:.3s;z-index:50;pointer-events:none;font-size:.9rem;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .intro-note{text-align:center;color:var(--muted);font-weight:700;font-size:.9rem;margin-top:26px}
+  .reset{background:none;color:var(--muted);font-weight:800;font-size:.82rem;text-decoration:underline;margin-top:6px}
+
+  @media(max-width:420px){
+    .q-text{font-size:2rem}
+    .choice{font-size:1.15rem;padding:15px}
+    .home-link .brand-txt{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="#" onclick="go('courses');return false;">
+    <img class="owl owl-brand" src="owl.png" alt="" /><span class="brand-txt">MathWorld</span>
+  </a>
+  <span class="stat coins"><img class="sprite" src="coin.png" alt=""><span id="s-coins">0</span></span>
+  <a class="back-site" href="index.html">✕</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="app">
+  <section class="screen active" id="auth">
+    <div class="auth-wrap">
+      <div class="auth-logo"><img src="owl.png" alt="MathWorld owl" /></div>
+      <h1 class="auth-title">MathWorld</h1>
+      <p class="auth-sub">Learn math the fun way — track your coins &amp; climb the leaderboard.</p>
+      <div class="auth-tabs">
+        <button class="auth-tab on" id="tab-login" onclick="authMode('login')">Log in</button>
+        <button class="auth-tab" id="tab-signup" onclick="authMode('signup')">Sign up</button>
+      </div>
+      <div class="auth-form">
+        <label class="fld" id="fld-name" hidden><span>Display name</span><input id="au-name" autocomplete="off" placeholder="e.g. Ada" maxlength="14" /></label>
+        <label class="fld"><span>Username</span><input id="au-user" autocomplete="off" placeholder="pick a username" maxlength="20" /></label>
+        <label class="fld"><span>Password</span><input id="au-pass" type="password" autocomplete="off" placeholder="at least 4 characters" /></label>
+        <p class="auth-err" id="au-err" hidden></p>
+        <button class="btn wide" id="au-submit" onclick="authSubmit()">Log in</button>
+        <p class="auth-note">🔒 Accounts are saved on <b>this device only</b> — pick a password you don't use elsewhere.</p>
+        <button class="auth-guest" onclick="playGuest()">Just play without an account →</button>
+      </div>
+    </div>
+  </section>
+  <section class="screen" id="courses"></section>
+  <section class="screen" id="home"></section>
+  <section class="screen" id="profile"></section>
+
+  <section class="screen" id="lesson">
+    <div class="lesson-top">
+      <button class="quit" onclick="quitLesson()">✕</button>
+      <div class="pbar"><div class="pfill" id="pfill"></div></div>
+      <span class="lesson-coins"><img class="sprite" src="coin.png" alt=""> <span id="l-coins">0</span></span>
+    </div>
+    <div class="q-kicker" id="q-kicker">Solve the problem</div>
+    <div class="q-card">
+      <div class="q-text" id="q-text">2 + 2</div>
+      <div class="q-sub" id="q-sub"></div>
+    </div>
+    <div id="answer-area"></div>
+  </section>
+
+  <section class="screen" id="complete">
+    <div class="complete">
+      <div class="big">🎉</div>
+      <h1>Lesson Complete!</h1>
+      <p class="tag" id="complete-tag">Nice work, mathlete!</p>
+      <div class="reward-row">
+        <div class="reward coins"><div class="r-head">COINS EARNED</div><div class="r-val"><img class="sprite" src="coin.png" alt=""> <span id="r-coins">10</span></div></div>
+        <div class="reward speed"><div class="r-head">ACCURACY</div><div class="r-val" id="r-acc">100%</div></div>
+      </div>
+      <button class="btn wide" onclick="go('home')">Continue</button>
+    </div>
+  </section>
+
+  <section class="screen" id="leaderboard"></section>
+</div>
+
+<div class="foot" id="foot" style="display:none">
+  <div class="foot-inner">
+    <div class="foot-msg" id="foot-msg"></div>
+    <button class="btn grey" id="check-btn" onclick="onCheck()">Check</button>
+  </div>
+</div>
+
+<nav class="botnav" id="botnav">
+  <button class="tab" data-tab="courses" onclick="go('courses')"><span class="t-ico"><img class="sprite" src="gradcap.png" alt=""></span>Courses</button>
+  <button class="tab" data-tab="home" onclick="goLearn()"><span class="t-ico"><img class="sprite" src="pencil.png" alt=""></span>Learn</button>
+  <button class="tab" data-tab="leaderboard" onclick="go('leaderboard')"><span class="t-ico"><img class="sprite" src="trophy.png" alt=""></span>Leaders</button>
+  <button class="tab" data-tab="profile" onclick="go('profile')"><span class="t-ico"><img class="sprite" src="person.png" alt=""></span>Profile</button>
+</nav>
+
+<script>
+/* ================= STATE & ACCOUNTS ================= */
+const defaults={coins:0,name:'You',courseId:null,progress:{}};
+const ACCT_KEY='mathworld_accounts';   // { username: {salt,hash,name,created} }
+const SESSION_KEY='mathworld_session'; // username currently logged in
+const clone=x=>JSON.parse(JSON.stringify(x));
+// custom animal/rocket icons (replace emoji); .sprite CSS sizes them per context
+const sprite=(src,alt)=>`<img class="sprite" src="${src}" alt="${alt}">`;
+const OWL=sprite('owl.png','owl'), CHICK=sprite('chick.png','chick'), FOX=sprite('fox.png','fox'),
+      DOLPHIN=sprite('dolphin.png','dolphin'), ROCKET=sprite('rocket.png','rocket');
+const TROPHY=sprite('trophy.png','trophy'), GRADCAP=sprite('gradcap.png','courses'),
+      PENCIL=sprite('pencil.png','lesson'), LOCKIMG=sprite('lock.png','locked');
+const PERSON=sprite('person.png','profile'), BOOKS=sprite('books.png','mastered'), BOOKOPEN=sprite('bookopen.png','unit'),
+      CROWN=sprite('crown.png','crown'), STAR=sprite('star.png','star'), SMILEY=sprite('smiley.png','you'), COIN=sprite('coin.png','coins');
+const dataKey=u=>'mathworld_data_'+u;
+let currentUser=null;   // username, or null for guest
+let S=clone(defaults);
+
+function currentDataKey(){return currentUser?dataKey(currentUser):'mathworld_guest';}
+function load(){try{const d=JSON.parse(localStorage.getItem(currentDataKey()));if(d)return Object.assign(clone(defaults),d);}catch(e){}return clone(defaults);}
+function save(){try{localStorage.setItem(currentDataKey(),JSON.stringify(S));}catch(e){}}
+
+function loadAccounts(){try{return JSON.parse(localStorage.getItem(ACCT_KEY))||{};}catch(e){return{};}}
+function saveAccounts(a){try{localStorage.setItem(ACCT_KEY,JSON.stringify(a));}catch(e){}}
+// lightweight salted hash — device-local only, NOT bank-grade security
+function hashPw(pw,salt){let h=5381;const s=salt+'|'+pw;for(let i=0;i<s.length;i++)h=((h*33)^s.charCodeAt(i))>>>0;return h.toString(16);}
+function randSalt(){return Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,6);}
+function normUser(u){return (u||'').trim().toLowerCase();}
+
+/* ================= PROBLEM GENERATORS ================= */
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick1(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// numeric generators -> {kicker,text,answer}
+function gAdd(l){const c=[10,20,50,100][Math.min(l,3)];const a=rnd(1,c),b=rnd(1,c);return{text:`${a} + ${b}`,answer:a+b};}
+function gSub(l){const c=[10,20,50,100][Math.min(l,3)];const a=rnd(2,c),b=rnd(1,a);return{text:`${a} − ${b}`,answer:a-b};}
+function gMulEasy(l){const a=pick1([2,5,10]);const b=rnd(1,10);return{text:`${a} × ${b}`,answer:a*b};}
+function gMul(l){const c=[5,8,10,12,12][Math.min(l,4)];const a=rnd(2,c),b=rnd(2,c);return{text:`${a} × ${b}`,answer:a*b};}
+function gMul2(l){const a=rnd(11,l>1?99:29),b=rnd(2,9);return{text:`${a} × ${b}`,answer:a*b};}
+function gDiv(l){const c=[5,6,8,10,12][Math.min(l,4)];const b=rnd(2,c),q=rnd(2,c);return{text:`${b*q} ÷ ${b}`,answer:q};}
+function gAddBig(l){const a=rnd(50,l>1?900:300),b=rnd(50,l>1?900:300);return{text:`${a} + ${b}`,answer:a+b};}
+function gFracOf(l){const d=pick1([2,3,4,5,l>2?6:5]);const n=rnd(2,7)*d;return{kicker:"How much is this?",text:`1/${d} of ${n}`,answer:n/d};}
+function gPercent(l){const p=pick1([10,25,50,l>1?20:50]);const step=100/p;const N=rnd(1,l>1?12:6)*step;return{kicker:"Find the percent",text:`${p}% of ${N}`,answer:Math.round(N*p/100)};}
+function gSolveX(l){
+  const t=rnd(0,l>1?2:1);
+  if(t===0){const x=rnd(1,20),b=rnd(1,20);return{kicker:"Solve for x",text:`x + ${b} = ${x+b}`,answer:x};}
+  if(t===1){const x=rnd(1,20),b=rnd(1,x);return{kicker:"Solve for x",text:`x − ${b} = ${x-b}`,answer:x};}
+  const x=rnd(2,9),a=rnd(2,9);return{kicker:"Solve for x",text:`${a}x = ${a*x}`,answer:x};
+}
+function gOrderOps(l){
+  if(Math.random()<.5){const a=rnd(1,9),b=rnd(1,9),c=rnd(2,6);return{kicker:"Order of operations",text:`${a} + ${b} × ${c}`,answer:a+b*c};}
+  const a=rnd(1,9),b=rnd(1,9),c=rnd(2,6);return{kicker:"Order of operations",text:`(${a} + ${b}) × ${c}`,answer:(a+b)*c};
+}
+
+// option-based generators -> {kicker,text,answer,options}  (string compare)
+function gDecimal(l){
+  const a=rnd(1,l>1?90:40),b=rnd(1,l>1?90:40);
+  const ans=((a+b)/10).toFixed(1);
+  const set=new Set([ans]);let g=0;
+  while(set.size<4&&g++<60){const d=((a+b)/10 + pick1([-1.2,-0.7,-0.3,0.3,0.7,1.1,2,-2])).toFixed(1);if(+d>=0&&d!==ans)set.add(d);}
+  return{kicker:"Add the decimals",text:`${(a/10).toFixed(1)} + ${(b/10).toFixed(1)}`,answer:ans,options:[...set]};
+}
+function gCompareFrac(l){
+  const d1=rnd(2,8),n1=rnd(1,d1),d2=rnd(2,8),n2=rnd(1,d2);
+  const v1=n1/d1,v2=n2/d2;
+  const ans = v1<v2?'<':(v1>v2?'>':'=');
+  return{kicker:"Compare the fractions",text:`${n1}/${d1}  ?  ${n2}/${d2}`,answer:ans,options:['<','=','>']};
+}
+function gCompareNum(l){
+  const a=rnd(1,l>1?200:50),b=rnd(1,l>1?200:50);
+  const ans=a<b?'<':(a>b?'>':'=');
+  return{kicker:"Which sign fits?",text:`${a}  ?  ${b}`,answer:ans,options:['<','=','>']};
+}
+
+/* ===== 6th-grade topic generators (one per lesson) ===== */
+// Unit 1 · Exponents & Powers
+function g6_exp(){const b=rnd(2,6),e=rnd(2,3);return{text:`${b}^${e}`,answer:Math.pow(b,e)};}
+function g6_square(){const n=rnd(2,15);return{text:`√${n*n}`,answer:n};}
+function g6_cube(){const n=rnd(2,6);return{text:`${n}³`,answer:n*n*n};}
+function g6_ooExp(){const a=rnd(2,5),b=rnd(1,6),c=rnd(2,3);return{text:`${a}² + ${b} × ${c}`,answer:a*a+b*c};}
+function g6_sci(){const a=rnd(1,9),n=rnd(2,3);return{text:`${a} × 10^${n}`,answer:a*Math.pow(10,n)};}
+function g6_expPat(){const b=pick1([2,3]);const s=[b,b*b,b*b*b];return{text:`${s[0]}, ${s[1]}, ${s[2]}, ?`,answer:b*b*b*b};}
+// Unit 2 · Percents
+function g6_fdp(){const pairs=[['1/2','50%'],['1/4','25%'],['3/4','75%'],['1/5','20%'],['2/5','40%'],['1/10','10%'],['3/10','30%'],['0.5','50%'],['0.25','25%']];const p=pick1(pairs);const all=['10%','20%','25%','30%','40%','50%','75%'];const o=new Set([p[1]]);let g=0;while(o.size<4&&g++<40)o.add(pick1(all));return{text:`${p[0]} = ?`,answer:p[1],options:[...o]};}
+function g6_pctOf(){return gPercent(2);}
+function g6_discount(){const price=pick1([20,40,60,80,100]),d=pick1([10,25,50]);return{text:`$${price} at ${d}% off`,answer:price*(100-d)/100};}
+function g6_tax(){const price=pick1([20,40,60,80,100]),t=pick1([5,10,25]);return{text:`$${price} + ${t}% tax`,answer:price*(100+t)/100};}
+function g6_markup(){const price=pick1([20,40,60,80,100]),m=pick1([10,25,50]);return{text:`$${price} marked up ${m}%`,answer:price*(100+m)/100};}
+function g6_pctChange(){const a=pick1([20,40,50,80,100]),pct=pick1([10,20,25,50]),inc=Math.random()<.5;const b=a*(100+(inc?pct:-pct))/100;return{text:`From ${a} to ${b}: percent change?`,answer:pct};}
+// Unit 3 · Algebraic Expressions
+function g6_var(){const x=rnd(2,12),b=rnd(1,9);return{text:`x + ${b},  x = ${x}`,answer:x+b};}
+function g6_expr(){const a=rnd(2,6),n=rnd(2,9);return{text:`${a}n,  n = ${n}`,answer:a*n};}
+function g6_eval(){const a=rnd(2,5),b=rnd(1,9),x=rnd(2,8);return{text:`${a}x + ${b},  x = ${x}`,answer:a*x+b};}
+function g6_likeTerms(){const a=rnd(2,6),b=rnd(3,7);return{text:`${a}x + ${b}x`,answer:`${a+b}x`,options:[`${a+b}x`,`${a*b}x`,`${a+b}`,`${a+b}x²`]};}
+function g6_distrib(){const a=rnd(2,5),b=rnd(2,6);return{text:`${a}(x + ${b}) = ${a}x + ?`,answer:a*b};}
+function g6_algReason(){const a=rnd(2,6),x=rnd(2,9);return{text:`${a}x = ${a*x},  x = ?`,answer:x};}
+// Unit 4 · Equations & Inequalities
+function g6_oneStep(){return gSolveX(0);}
+function g6_twoStep(){const x=rnd(1,9),a=rnd(2,5),b=rnd(1,9);return{text:`${a}x + ${b} = ${a*x+b}`,answer:x};}
+function g6_multiStep(){const x=rnd(1,8),a=rnd(2,4),b=rnd(1,6);return{text:`${a}x + ${b} + x = ${(a+1)*x+b}`,answer:x};}
+function g6_bothSides(){const x=rnd(1,8),a=rnd(3,6),b=rnd(1,a-1),lc=rnd(1,9);return{text:`${a}x + ${lc} = ${b}x + ${lc+(a-b)*x}`,answer:x};}
+function g6_ineq(){const b=rnd(1,5),C=rnd(6,15);return{text:`x + ${b} > ${C}.  Smallest whole number x?`,answer:C-b+1};}
+function g6_wordEq(){const n=rnd(2,15),b=rnd(1,12);return{text:`A number plus ${b} is ${n+b}. The number?`,answer:n};}
+// Unit 5 · Coordinate Plane
+function g6_ordPair(){const x=rnd(1,9),y=rnd(1,9),ax=Math.random()<.5;return{text:`In (${x}, ${y}), the ${ax?'x':'y'}-coordinate?`,answer:ax?x:y};}
+function g6_quad(){const x=(Math.random()<.5?1:-1)*rnd(1,6),y=(Math.random()<.5?1:-1)*rnd(1,6);const q=x>0?(y>0?'I':'IV'):(y>0?'II':'III');return{text:`Which quadrant is (${x}, ${y})?`,answer:q,options:['I','II','III','IV']};}
+function g6_graphPt(){const x=rnd(1,8),y=rnd(1,8);return{text:`From the origin: right ${x}, up ${y}. x-coordinate?`,answer:x};}
+function g6_dist(){const x=rnd(1,6),a=rnd(0,5),len=rnd(2,7);return{text:`Distance from (${x}, ${a}) to (${x}, ${a+len})?`,answer:len};}
+function g6_mid(){const x1=rnd(0,10),x2=x1+2*rnd(1,5),y=rnd(0,8);return{text:`Midpoint of (${x1}, ${y}) and (${x2}, ${y}): x-coordinate?`,answer:(x1+x2)/2};}
+function g6_coordReason(){const x=rnd(1,8),y=rnd(1,8);return{text:`Reflect (${x}, ${y}) over the x-axis. New y-coordinate?`,answer:-y};}
+// Unit 6 · Linear Relationships
+function g6_slope(){const run=pick1([1,2,3,4]),m=rnd(1,5);return{text:`Rise ${m*run} over run ${run}. Slope?`,answer:m};}
+function g6_graphLine(){const m=rnd(1,5),x=rnd(1,6);return{text:`y = ${m}x.  When x = ${x}, y = ?`,answer:m*x};}
+function g6_linEq(){const m=rnd(1,4),b=rnd(1,6),x=rnd(1,5);return{text:`y = ${m}x + ${b}.  x = ${x}, y = ?`,answer:m*x+b};}
+function g6_intercept(){const m=rnd(1,5),b=rnd(1,9);return{text:`y = ${m}x + ${b}.  y-intercept?`,answer:b};}
+function g6_table(){const m=rnd(2,5),x=rnd(4,7);return{text:`x: 1, 2, 3 → y: ${m}, ${2*m}, ${3*m}.  y when x = ${x}?`,answer:m*x};}
+function g6_realLin(){const rate=pick1([40,50,60]),h=rnd(2,5);return{text:`A car travels ${rate} mph. Distance in ${h} hours?`,answer:rate*h};}
+// Unit 7 · Polygons & Triangles
+function g6_triClass(){const o=pick1([['all sides equal','Equilateral'],['exactly two sides equal','Isosceles'],['no sides equal','Scalene'],['a 90° angle','Right']]);return{text:`A triangle with ${o[0]} is?`,answer:o[1],options:['Equilateral','Isosceles','Scalene','Right']};}
+function g6_angleSum(){const a=rnd(30,80),b=rnd(30,80);return{text:`Triangle angles ${a}° and ${b}°. Third angle?`,answer:180-a-b};}
+function g6_extAngle(){const i=rnd(100,150);return{text:`Interior angle ${i}°. Its exterior angle?`,answer:180-i};}
+function g6_quadAngles(){const a=rnd(70,100),b=rnd(70,100),c=rnd(70,100);return{text:`Quadrilateral angles ${a}°, ${b}°, ${c}°. Fourth?`,answer:360-a-b-c};}
+function g6_polySum(){const n=pick1([5,6,7,8]);return{text:`Sum of interior angles of a ${n}-sided polygon?`,answer:(n-2)*180};}
+function g6_regPoly(){const n=pick1([3,4,5,6]);return{text:`Each interior angle of a regular ${n}-gon?`,answer:(n-2)*180/n};}
+// Unit 8 · Circles & Transformations
+function g6_radDia(){const r=rnd(2,12);return Math.random()<.5?{text:`Radius ${r}. Diameter?`,answer:2*r}:{text:`Diameter ${2*r}. Radius?`,answer:r};}
+function g6_circumf(){const d=rnd(2,12);return{text:`C = πd, use π = 3. d = ${d}. C = ?`,answer:3*d};}
+function g6_circArea(){const r=rnd(2,8);return{text:`A = πr², use π = 3. r = ${r}. A = ?`,answer:3*r*r};}
+function g6_reflect(){const x=rnd(1,8),y=rnd(1,8);return{text:`Reflect (${x}, ${y}) over the y-axis. New x-coordinate?`,answer:-x};}
+function g6_rotate(){const x=rnd(1,8),y=rnd(1,8);return{text:`Rotate (${x}, ${y}) 180° about the origin. New x-coordinate?`,answer:-x};}
+function g6_translate(){const x=rnd(1,8),y=rnd(1,8),d=rnd(2,6);return{text:`Translate (${x}, ${y}) right ${d}. New x-coordinate?`,answer:x+d};}
+// Unit 9 · Algebra I Preview
+function g6_system(){const x=rnd(2,8),y=rnd(1,x-1);return{text:`x + y = ${x+y},  x − y = ${x-y}.  x = ?`,answer:x};}
+function g6_factor(){const b=rnd(2,9);return{text:`x² + ${b}x = x(x + ?)`,answer:b};}
+function g6_quadPat(){const s=rnd(1,3);return{text:`${s*s}, ${(s+1)*(s+1)}, ${(s+2)*(s+2)}, ?`,answer:(s+3)*(s+3)};}
+function g6_expGrow(){const b=pick1([2,3]);return{text:`${b}, ${b*b}, ${b*b*b}, ?`,answer:b*b*b*b};}
+function g6_funcNot(){const a=rnd(2,5),b=rnd(1,9),x=rnd(2,7);return{text:`f(x) = ${a}x + ${b}.  f(${x}) = ?`,answer:a*x+b};}
+function g6_model(){const price=rnd(3,12),n=rnd(3,9);return{text:`Tickets cost $${price} each. Cost for ${n} tickets?`,answer:price*n};}
+// Unit 10 · Competition Math & Placement Prep
+function g6_logic(){const x=rnd(2,12),m=pick1([2,3]),b=rnd(1,9);return{text:`A number times ${m}, plus ${b}, equals ${m*x+b}. The number?`,answer:x};}
+function g6_count(){const n=pick1([3,4,5]);let f=1;for(let i=2;i<=n;i++)f*=i;return{text:`How many ways to arrange ${n} distinct books in a row?`,answer:f};}
+function g6_rate(){const per=rnd(2,5),k=rnd(2,4),q=rnd(4,8);return{text:`If ${per} pens cost $${per*k}, cost of ${q} pens?`,answer:k*q};}
+function g6_advWord(){const mid=rnd(3,20);return{text:`Three consecutive integers sum to ${3*mid}. The middle one?`,answer:mid};}
+function g6_mathcounts(){const n=pick1([10,15,20,100]);return{text:`1 + 2 + 3 + … + ${n} = ?`,answer:n*(n+1)/2};}
+function g6_amc8(){const a=rnd(2,7),b=rnd(2,7),avg=rnd(6,10);return{text:`The average of ${a}, ${b}, and x is ${avg}. x = ?`,answer:3*avg-a-b};}
+
+/* ===== Honors shared library (grades 2–5) ===== */
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);return b?gcd(b,a%b):a;}
+function mulBy(k){return()=>{const b=rnd(1,12);return{text:`${k} × ${b}`,answer:k*b};};}
+function divBy(k){return()=>{const q=rnd(2,12);return{text:`${k*q} ÷ ${k}`,answer:q};};}
+// number & operations
+function hAdd3(){const a=rnd(2,30),b=rnd(2,30),c=rnd(2,30);return{text:`${a} + ${b} + ${c}`,answer:a+b+c};}
+function hDoubles(){const n=rnd(3,25);return{text:`${n} + ${n}`,answer:2*n};}
+function hDoubleOf(){const n=rnd(2,20);return{text:`Double ${n}?`,answer:2*n};}
+function hHalf(){const n=rnd(2,20);return{text:`Half of ${2*n}?`,answer:n};}
+function hMissingAdd(){const a=rnd(2,30),s=a+rnd(2,30);return{text:`${a} + ? = ${s}`,answer:s-a};}
+function hMissingSub(){const x=rnd(6,40),b=rnd(1,x-1);return{text:`${x} − ? = ${x-b}`,answer:b};}
+function hMissingFactor(){const a=rnd(2,9),q=rnd(2,9);return{text:`${a} × ? = ${a*q}`,answer:q};}
+function hSquareN(){const n=rnd(2,12);return{text:`${n}²`,answer:n*n};}
+function hRemainder(){const b=rnd(3,7),q=rnd(2,7),r=rnd(1,b-1);return{text:`Remainder of ${b*q+r} ÷ ${b}?`,answer:r};}
+function hSubBig(){const a=rnd(200,900),b=rnd(50,a-10);return{text:`${a} − ${b}`,answer:a-b};}
+function hAdd4(){const a=rnd(1000,5000),b=rnd(1000,4000);return{text:`${a} + ${b}`,answer:a+b};}
+function hMulTen(){const a=rnd(2,9),b=rnd(1,9)*10;return{text:`${a} × ${b}`,answer:a*b};}
+function hMul3x1(){const a=rnd(100,999),b=rnd(2,9);return{text:`${a} × ${b}`,answer:a*b};}
+function hMul2x2(){const a=rnd(11,40),b=rnd(11,30);return{text:`${a} × ${b}`,answer:a*b};}
+function hDivBig(){const b=rnd(3,9),q=rnd(20,90);return{text:`${b*q} ÷ ${b}`,answer:q};}
+function hArray(){const r=rnd(2,6),c=rnd(2,6);return{text:`${r} rows of ${c} = ?`,answer:r*c};}
+function hShare(){const q=rnd(2,9),d=rnd(2,6);return{text:`${q*d} shared equally among ${d} = ?`,answer:q};}
+// place value
+function hPlaceTens(){const n=rnd(10,99);return{text:`Tens digit of ${n}?`,answer:Math.floor(n/10)%10};}
+function hPlaceHund(){const n=rnd(100,999);return{text:`Hundreds digit of ${n}?`,answer:Math.floor(n/100)};}
+function hThousands(){const n=rnd(1000,9999);return{text:`Thousands digit of ${n}?`,answer:Math.floor(n/1000)};}
+function hPlaceValueOf(){const n=rnd(100,999);return{text:`Value of the tens digit in ${n}?`,answer:(Math.floor(n/10)%10)*10};}
+function hExpanded(){const h=rnd(1,9),t=rnd(0,9),o=rnd(0,9);return{text:`${h*100} + ${t*10} + ${o} = ?`,answer:h*100+t*10+o};}
+function hRoundTen(){const n=rnd(11,98);return{text:`Round ${n} to the nearest ten`,answer:Math.round(n/10)*10};}
+function hRoundHund(){const n=rnd(110,980);return{text:`Round ${n} to the nearest hundred`,answer:Math.round(n/100)*100};}
+function hPow10(){const n=rnd(1,4);return{text:`10^${n}`,answer:Math.pow(10,n)};}
+// patterns
+function hEvenOdd(){const n=rnd(1,50);return{text:`Is ${n} even or odd?`,answer:n%2?'Odd':'Even',options:['Even','Odd']};}
+function hSkip(){const st=pick1([2,3,4,5,10,25,100]),start=st*rnd(1,5);return{text:`${start}, ${start+st}, ${start+2*st}, ?`,answer:start+3*st};}
+function hSeq(){const st=rnd(2,9),start=rnd(1,9);return{text:`${start}, ${start+st}, ${start+2*st}, ${start+3*st}, ?`,answer:start+4*st};}
+function hInputOutput(){const m=rnd(2,6),x=rnd(2,9);return{text:`Rule: ×${m}. Input ${x} → output ?`,answer:m*x};}
+// money, time, measure
+function hCoins(){const c=pick1([[1,'pennies'],[5,'nickels'],[10,'dimes'],[25,'quarters']]),k=rnd(2,6);return{text:`${k} ${c[1]} = ? cents`,answer:k*c[0]};}
+function hMoneyAdd(){const a=rnd(10,60),b=rnd(5,40);return{text:`${a}¢ + ${b}¢ = ?¢`,answer:a+b};}
+function hMakeChange(){const cost=rnd(10,90);return{text:`Pay $1 (100¢) for a ${cost}¢ item. Change?`,answer:100-cost};}
+function hMinutes(){const n=rnd(1,6);return{text:`Minutes in ${n} hour(s)?`,answer:n*60};}
+function hElapsed(){const s=rnd(1,8),e=s+rnd(1,4);return{text:`From ${s}:00 to ${e}:00 is ? hours`,answer:e-s};}
+function hConvert(){const u=pick1([['m','cm',100],['km','m',1000],['kg','g',1000],['hr','min',60],['ft','in',12],['dollars','cents',100]]),q=rnd(2,9);return{text:`${q} ${u[0]} = ? ${u[1]}`,answer:q*u[2]};}
+// shapes & geometry
+function hSides(){const s=pick1([['triangle',3],['square',4],['pentagon',5],['hexagon',6],['octagon',8]]);return{text:`How many sides does a ${s[0]} have?`,answer:s[1]};}
+function hFaces(){const s=pick1([['cube',6],['rectangular prism',6],['square pyramid',5],['triangular prism',5]]);return{text:`How many faces does a ${s[0]} have?`,answer:s[1]};}
+function hSymmetry(){const s=pick1([['square',4],['equilateral triangle',3],['rectangle',2],['regular pentagon',5],['regular hexagon',6]]);return{text:`Lines of symmetry in a ${s[0]}?`,answer:s[1]};}
+function hFracParts(){const d=pick1([2,3,4,6,8]);return{text:`A whole split into ${d} equal parts: each part is 1/?`,answer:d};}
+function hPerimeter(){const l=rnd(2,12),w=rnd(2,12);return{text:`Perimeter of a ${l}×${w} rectangle?`,answer:2*(l+w)};}
+function hAreaRect(){const l=rnd(2,12),w=rnd(2,12);return{text:`Area of a ${l}×${w} rectangle?`,answer:l*w};}
+function hAreaSquare(){const s=rnd(2,12);return{text:`Area of a square with side ${s}?`,answer:s*s};}
+function hMissingSide(){const w=rnd(2,9),l=rnd(2,12);return{text:`Rectangle area ${l*w}, width ${w}. Length?`,answer:l};}
+function hVolumeBox(){const a=rnd(2,6),b=rnd(2,6),c=rnd(2,5);return{text:`Volume of a ${a}×${b}×${c} box?`,answer:a*b*c};}
+function hAngleType(){const deg=pick1([rnd(10,89),90,rnd(91,179),180]);const ans=deg<90?'Acute':deg===90?'Right':deg<180?'Obtuse':'Straight';return{text:`A ${deg}° angle is:`,answer:ans,options:['Acute','Right','Obtuse','Straight']};}
+function hQuadType(){const o=pick1([['four equal sides and four right angles','Square'],['four right angles and opposite sides equal','Rectangle'],['four equal sides but no right angles','Rhombus'],['exactly one pair of parallel sides','Trapezoid']]);return{text:`A quadrilateral with ${o[0]} is a:`,answer:o[1],options:['Square','Rectangle','Rhombus','Trapezoid']};}
+// fractions & decimals
+function hEquiv(){const n=rnd(1,4),d=rnd(n+1,6),k=rnd(2,4);return{text:`${n}/${d} = ?/${d*k}`,answer:n*k};}
+function hFracAddLike(){const d=rnd(4,10),a=rnd(1,d-2),b=rnd(1,d-a);return{text:`${a}/${d} + ${b}/${d} = ?/${d}`,answer:a+b};}
+function hFracSubLike(){const d=rnd(4,10),a=rnd(2,d),b=rnd(1,a-1);return{text:`${a}/${d} − ${b}/${d} = ?/${d}`,answer:a-b};}
+function hFracMultWhole(){const d=rnd(3,9),a=rnd(2,d-1);return{text:`${a} × 1/${d} = ?/${d}`,answer:a};}
+function hFracMult(){const b=rnd(2,5),a=rnd(1,b-1),d=rnd(2,5),c=rnd(1,d-1);return{text:`${a}/${b} × ${c}/${d} = ?/${b*d}`,answer:a*c};}
+function hHalves(){const n=rnd(2,8);return{text:`How many halves in ${n} wholes?`,answer:2*n};}
+function hCommonDenom(){const d1=rnd(2,6),d2=rnd(2,6);return{text:`Common denominator for 1/${d1} and 1/${d2}?`,answer:d1*d2/gcd(d1,d2)};}
+function hDivUnitFrac(){const n=rnd(2,6),d=rnd(2,5);return{text:`${n} ÷ 1/${d} = ?`,answer:n*d};}
+function hMixedToImproper(){const d=rnd(2,5),w=rnd(1,4),n=rnd(1,d-1);return{text:`${w} and ${n}/${d} = ?/${d}`,answer:w*d+n};}
+function hDecAdd(){return gDecimal(1);}
+function hDecMul(){const a=rnd(2,9),b=rnd(2,5),ans=(a*b/10).toFixed(1),set=new Set([ans]);let g=0;while(set.size<4&&g++<50){const d=((a*b+pick1([-20,-10,-5,5,10,20]))/10).toFixed(1);if(+d>=0&&d!==ans)set.add(d);}return{text:`0.${a} × ${b}`,answer:ans,options:[...set]};}
+function hDecDiv(){const b=rnd(2,5),q=rnd(2,9),ans=(q/10).toFixed(1),set=new Set([ans]);let g=0;while(set.size<4&&g++<50){const dd=((q+pick1([-3,-2,-1,1,2,3]))/10).toFixed(1);if(+dd>=0&&dd!==ans)set.add(dd);}return{text:`${(b*q/10).toFixed(1)} ÷ ${b}`,answer:ans,options:[...set]};}
+function hDecCompare(){const a=rnd(1,99),b=rnd(1,99),ans=a<b?'<':(a>b?'>':'=');return{text:`${(a/10).toFixed(1)}  ?  ${(b/10).toFixed(1)}`,answer:ans,options:['<','=','>']};}
+function hDecPercent(){const p=pick1([[0.5,50],[0.25,25],[0.1,10],[0.2,20],[0.75,75],[0.3,30],[0.9,90]]);return{text:`${p[0]} = ?%`,answer:p[1]};}
+function hDecFrac(){const p=pick1([['0.5','1/2'],['0.25','1/4'],['0.75','3/4'],['0.2','1/5'],['0.1','1/10']]),all=['1/2','1/4','3/4','1/5','1/10','2/5'],o=new Set([p[1]]);let g=0;while(o.size<4&&g++<40)o.add(pick1(all));return{text:`${p[0]} as a fraction?`,answer:p[1],options:[...o]};}
+function hRoundDec(){const n=rnd(11,99);return{text:`Round ${(n/10).toFixed(1)} to the nearest whole number`,answer:Math.round(n/10)};}
+// number theory
+function hMultipleNth(){const n=rnd(2,9),k=rnd(2,6);return{text:`The ${k}th multiple of ${n}?`,answer:n*k};}
+function hFactorPick(){const n=pick1([12,18,20,24,30,36]),facs=[],nons=[];for(let i=2;i<n;i++)(n%i?nons:facs).push(i);const f=pick1(facs),set=new Set([String(f)]);let g=0;while(set.size<4&&g++<60)set.add(String(pick1(nons)));return{text:`Which is a factor of ${n}?`,answer:String(f),options:[...set]};}
+function hPrime(){const primes=[2,3,5,7,11,13,17,19,23],comps=[4,6,8,9,10,12,14,15,16,18,20,21],isP=Math.random()<.5,n=isP?pick1(primes):pick1(comps);return{text:`Is ${n} prime?`,answer:isP?'Yes':'No',options:['Yes','No']};}
+function hGCF(){const g=pick1([2,3,4,5,6]),a=g*pick1([1,2,3,5,7]),b=g*pick1([1,2,3,5,7]);return{text:`GCF of ${a} and ${b}?`,answer:gcd(a,b)};}
+function hLCM(){const a=rnd(2,8),b=rnd(2,8);return{text:`LCM of ${a} and ${b}?`,answer:a*b/gcd(a,b)};}
+function hSmallestPrimeFactor(){const n=pick1([12,15,21,35,33,14,22,26,25,49]);let f=2;while(n%f)f++;return{text:`Smallest prime factor of ${n}?`,answer:f};}
+function hDivisible(){const d=pick1([2,3,4,5,9,10]),n=(Math.random()<.5?d*rnd(2,12):d*rnd(2,12)+rnd(1,d-1));return{text:`Is ${n} divisible by ${d}?`,answer:(n%d===0)?'Yes':'No',options:['Yes','No']};}
+// ratios & rates
+function hRatioSimplify(){const g=rnd(2,6),b=pick1([2,3,4,5]);return{text:`Simplify the ratio ${g}:${g*b} to 1:?`,answer:b};}
+function hEquivRatio(){const a=rnd(1,5),b=rnd(1,5),k=rnd(2,4);return{text:`${a}:${b} = ${a*k}:?`,answer:b*k};}
+function hUnitRate(){const per=rnd(2,6),tot=per*rnd(2,6);return{text:`$${tot} for ${per} items. Price per item?`,answer:tot/per};}
+function hScale(){const s=pick1([2,3,5,10]),q=rnd(2,6);return{text:`If 1 cm = ${s} km, then ${q} cm = ? km`,answer:s*q};}
+// word & logic
+function hWordAdd(){const a=rnd(5,40),b=rnd(3,30);return{text:`Sam has ${a} stickers and gets ${b} more. How many now?`,answer:a+b};}
+function hWordSub(){const a=rnd(20,60),b=rnd(3,a-1);return{text:`There are ${a} apples; ${b} are eaten. How many are left?`,answer:a-b};}
+function hTwoStepWord(){const a=rnd(2,6),b=rnd(2,6),c=rnd(1,10);return{text:`${a} boxes of ${b} pencils, plus ${c} loose. Total pencils?`,answer:a*b+c};}
+function hCompareWord(){const a=rnd(10,40),d=rnd(3,15);return{text:`Mia has ${a}. Leo has ${d} more than Mia. How many does Leo have?`,answer:a+d};}
+function hRiddle(){const x=rnd(2,15);return{text:`Double a number is ${2*x}. The number?`,answer:x};}
+
+/* ================= COURSES ================= */
+const COURSES=[
+  {id:'g2',name:'2nd Grade Honors',sub:'Accelerated arithmetic, place value & early multiplication',emoji:CHICK,color:'var(--green)',
+    units:[
+      {name:'Addition Mastery',sub:'Unit 1 · Sums, doubles & missing addends',topics:[
+        {name:'Sums within 20',gen:()=>gAdd(1)},{name:'Sums within 100',gen:()=>gAdd(3)},{name:'Three addends',gen:hAdd3},
+        {name:'Doubles',gen:hDoubles},{name:'Missing addend',gen:hMissingAdd},{name:'Addition word problems',gen:hWordAdd}]},
+      {name:'Subtraction Mastery',sub:'Unit 2 · Differences & fact families',topics:[
+        {name:'Subtract within 20',gen:()=>gSub(1)},{name:'Subtract within 100',gen:()=>gSub(3)},{name:'Missing number',gen:hMissingSub},
+        {name:'Differences',gen:()=>gSub(2)},{name:'Subtraction word problems',gen:hWordSub},{name:'Check with addition',gen:hMissingAdd}]},
+      {name:'Place Value',sub:'Unit 3 · Tens, hundreds & expanded form',topics:[
+        {name:'Tens & ones',gen:hPlaceTens},{name:'Hundreds',gen:hPlaceHund},{name:'Expanded form',gen:hExpanded},
+        {name:'Value of a digit',gen:hPlaceValueOf},{name:'Compare numbers',gen:()=>gCompareNum(1)},{name:'Round to nearest ten',gen:hRoundTen}]},
+      {name:'Skip Counting & Patterns',sub:'Unit 4 · Counting, doubling & sequences',topics:[
+        {name:'Skip counting',gen:hSkip},{name:'Number patterns',gen:hSeq},{name:'Even & odd',gen:hEvenOdd},
+        {name:'Doubling',gen:hDoubleOf},{name:'Halving',gen:hHalf},{name:'Growing sequences',gen:hSkip}]},
+      {name:'Intro Multiplication',sub:'Unit 5 · Equal groups & arrays',topics:[
+        {name:'Groups of 2',gen:mulBy(2)},{name:'Groups of 5',gen:mulBy(5)},{name:'Groups of 10',gen:mulBy(10)},
+        {name:'Arrays',gen:hArray},{name:'Repeated addition',gen:hArray},{name:'Times 3',gen:mulBy(3)}]},
+      {name:'Intro Division',sub:'Unit 6 · Sharing & halving',topics:[
+        {name:'Sharing equally',gen:hShare},{name:'Equal groups',gen:hShare},{name:'Halving',gen:hHalf},
+        {name:'Divide by 2',gen:divBy(2)},{name:'Divide by 5',gen:divBy(5)},{name:'Relate to multiplication',gen:hMissingFactor}]},
+      {name:'Money',sub:'Unit 7 · Coins, change & dollars',topics:[
+        {name:'Coin values',gen:hCoins},{name:'Adding coins',gen:hMoneyAdd},{name:'Making change',gen:hMakeChange},
+        {name:'Compare money',gen:()=>gCompareNum(0)},{name:'Dollars & cents',gen:hConvert},{name:'Money word problems',gen:hWordAdd}]},
+      {name:'Time & Measurement',sub:'Unit 8 · Clocks, units & estimation',topics:[
+        {name:'Minutes in hours',gen:hMinutes},{name:'Elapsed time',gen:hElapsed},{name:'Compare lengths',gen:()=>gCompareNum(0)},
+        {name:'Unit conversions',gen:hConvert},{name:'Doubling amounts',gen:hDoubleOf},{name:'Estimation',gen:hRoundTen}]},
+      {name:'Geometry Basics',sub:'Unit 9 · Shapes, symmetry & fractions',topics:[
+        {name:'Sides of shapes',gen:hSides},{name:'Corners & vertices',gen:hSides},{name:'3D shapes',gen:hFaces},
+        {name:'Symmetry',gen:hSymmetry},{name:'Equal parts',gen:hFracParts},{name:'Halves & quarters',gen:hHalf}]},
+      {name:'Word Problems & Logic',sub:'Unit 10 · Reasoning & riddles',topics:[
+        {name:'Addition word problems',gen:hWordAdd},{name:'Subtraction word problems',gen:hWordSub},{name:'Two-step problems',gen:hTwoStepWord},
+        {name:'Comparisons',gen:hCompareWord},{name:'Patterns',gen:hSeq},{name:'Number riddles',gen:hRiddle}]},
+    ]},
+  {id:'g3',name:'3rd Grade Honors',sub:'Accelerated multiplication, division & fractions',emoji:FOX,color:'var(--blue)',
+    units:[
+      {name:'Multiplication Facts',sub:'Unit 1 · Fluency through 12',topics:[
+        {name:'Facts ×2–5',gen:()=>gMul(0)},{name:'Facts ×6–9',gen:()=>{const a=rnd(6,9),b=rnd(2,9);return{text:`${a} × ${b}`,answer:a*b};}},{name:'Facts ×10–12',gen:()=>{const a=rnd(10,12),b=rnd(2,12);return{text:`${a} × ${b}`,answer:a*b};}},
+        {name:'Missing factor',gen:hMissingFactor},{name:'Squares',gen:hSquareN},{name:'Fact fluency',gen:()=>gMul(2)}]},
+      {name:'Division Facts',sub:'Unit 2 · Dividing & remainders',topics:[
+        {name:'Divide ÷2–5',gen:()=>gDiv(0)},{name:'Divide ÷6–9',gen:()=>{const b=rnd(6,9),q=rnd(2,9);return{text:`${b*q} ÷ ${b}`,answer:q};}},{name:'Remainders',gen:hRemainder},
+        {name:'Missing number',gen:hMissingFactor},{name:'Relate to multiplication',gen:hMissingFactor},{name:'Fact fluency',gen:()=>gDiv(2)}]},
+      {name:'Multi-digit Add/Sub',sub:'Unit 3 · 3- and 4-digit',topics:[
+        {name:'3-digit addition',gen:()=>gAddBig(1)},{name:'3-digit subtraction',gen:hSubBig},{name:'4-digit addition',gen:hAdd4},
+        {name:'Rounding',gen:hRoundHund},{name:'Missing addend',gen:hMissingAdd},{name:'Word problems',gen:hTwoStepWord}]},
+      {name:'Place Value & Rounding',sub:'Unit 4 · Thousands & estimation',topics:[
+        {name:'Thousands place',gen:hThousands},{name:'Expanded form',gen:hExpanded},{name:'Compare numbers',gen:()=>gCompareNum(1)},
+        {name:'Round to ten',gen:hRoundTen},{name:'Round to hundred',gen:hRoundHund},{name:'Value of a digit',gen:hPlaceValueOf}]},
+      {name:'Fractions Intro',sub:'Unit 5 · Unit fractions & equivalents',topics:[
+        {name:'Unit fractions',gen:hFracParts},{name:'Fraction of a set',gen:gFracOf},{name:'Equivalent fractions',gen:hEquiv},
+        {name:'Compare fractions',gen:gCompareFrac},{name:'Add like denominators',gen:hFracAddLike},{name:'Halves & fourths',gen:hHalves}]},
+      {name:'Area & Perimeter',sub:'Unit 6 · Rectangles & tiling',topics:[
+        {name:'Perimeter of rectangle',gen:hPerimeter},{name:'Area of rectangle',gen:hAreaRect},{name:'Area of square',gen:hAreaSquare},
+        {name:'Missing side',gen:hMissingSide},{name:'Tiling & arrays',gen:hArray},{name:'Word problems',gen:hTwoStepWord}]},
+      {name:'Multiplication Strategies',sub:'Unit 7 · Distributive & multiples of 10',topics:[
+        {name:'×multiples of 10',gen:hMulTen},{name:'Distributive property',gen:g6_distrib},{name:'2-digit × 1-digit',gen:gMul2},
+        {name:'Doubling & halving',gen:hDoubleOf},{name:'Arrays',gen:hArray},{name:'Patterns',gen:hSeq}]},
+      {name:'Measurement',sub:'Unit 8 · Time, mass & money',topics:[
+        {name:'Time in minutes',gen:hMinutes},{name:'Elapsed time',gen:hElapsed},{name:'Unit conversions',gen:hConvert},
+        {name:'Mass & volume',gen:hConvert},{name:'Money',gen:hMakeChange},{name:'Word problems',gen:hWordAdd}]},
+      {name:'Geometry',sub:'Unit 9 · Polygons, angles & symmetry',topics:[
+        {name:'Polygon sides',gen:hSides},{name:'Angle types',gen:hAngleType},{name:'Quadrilaterals',gen:hQuadType},
+        {name:'Lines of symmetry',gen:hSymmetry},{name:'Perimeter',gen:hPerimeter},{name:'3D shapes',gen:hFaces}]},
+      {name:'Problem Solving & Logic',sub:'Unit 10 · Reasoning & patterns',topics:[
+        {name:'Two-step problems',gen:hTwoStepWord},{name:'Comparison problems',gen:hCompareWord},{name:'Number patterns',gen:hSeq},
+        {name:'Logic riddles',gen:hRiddle},{name:'Counting',gen:g6_count},{name:'Multiplicative reasoning',gen:hMissingFactor}]},
+    ]},
+  {id:'g4',name:'4th Grade Honors',sub:'Accelerated operations, fractions, decimals & geometry',emoji:DOLPHIN,color:'var(--purple)',
+    units:[
+      {name:'Multi-digit Multiplication',sub:'Unit 1 · Up to 2-digit × 2-digit',topics:[
+        {name:'2-digit × 1-digit',gen:gMul2},{name:'3-digit × 1-digit',gen:hMul3x1},{name:'2-digit × 2-digit',gen:hMul2x2},
+        {name:'×multiples of 10',gen:hMulTen},{name:'Estimate products',gen:hMulTen},{name:'Word problems',gen:hTwoStepWord}]},
+      {name:'Long Division',sub:'Unit 2 · Dividing with remainders',topics:[
+        {name:'Divide ÷1-digit',gen:()=>gDiv(3)},{name:'Larger dividends',gen:hDivBig},{name:'Remainders',gen:hRemainder},
+        {name:'Missing number',gen:hMissingFactor},{name:'Divisibility',gen:hDivisible},{name:'Word problems',gen:hShare}]},
+      {name:'Fractions',sub:'Unit 3 · Operations & mixed numbers',topics:[
+        {name:'Equivalent fractions',gen:hEquiv},{name:'Compare fractions',gen:gCompareFrac},{name:'Add like denominators',gen:hFracAddLike},
+        {name:'Subtract like denominators',gen:hFracSubLike},{name:'Multiply by a whole',gen:hFracMultWhole},{name:'Fraction of a number',gen:gFracOf}]},
+      {name:'Decimals',sub:'Unit 4 · Tenths, hundredths & conversions',topics:[
+        {name:'Add decimals',gen:hDecAdd},{name:'Multiply decimals',gen:hDecMul},{name:'Compare decimals',gen:hDecCompare},
+        {name:'Decimal ↔ percent',gen:hDecPercent},{name:'Decimal ↔ fraction',gen:hDecFrac},{name:'Round decimals',gen:hRoundDec}]},
+      {name:'Factors & Multiples',sub:'Unit 5 · Primes, GCF & LCM',topics:[
+        {name:'Factors',gen:hFactorPick},{name:'Multiples',gen:hMultipleNth},{name:'Prime or composite',gen:hPrime},
+        {name:'GCF',gen:hGCF},{name:'LCM',gen:hLCM},{name:'Prime factors',gen:hSmallestPrimeFactor}]},
+      {name:'Place Value',sub:'Unit 6 · Large numbers & powers of 10',topics:[
+        {name:'Thousands & beyond',gen:hThousands},{name:'Expanded form',gen:hExpanded},{name:'Round large numbers',gen:hRoundHund},
+        {name:'Compare',gen:()=>gCompareNum(1)},{name:'Value of a digit',gen:hPlaceValueOf},{name:'Powers of 10',gen:hPow10}]},
+      {name:'Geometry & Angles',sub:'Unit 7 · Angles, triangles & quadrilaterals',topics:[
+        {name:'Angle types',gen:hAngleType},{name:'Triangle classification',gen:g6_triClass},{name:'Angle sums',gen:g6_angleSum},
+        {name:'Quadrilaterals',gen:hQuadType},{name:'Symmetry',gen:hSymmetry},{name:'Polygon sides',gen:hSides}]},
+      {name:'Area, Perimeter & Volume',sub:'Unit 8 · Measurement in 2D & 3D',topics:[
+        {name:'Perimeter',gen:hPerimeter},{name:'Area of rectangle',gen:hAreaRect},{name:'Area of square',gen:hAreaSquare},
+        {name:'Volume of boxes',gen:hVolumeBox},{name:'Unit conversions',gen:hConvert},{name:'Word problems',gen:hTwoStepWord}]},
+      {name:'Patterns & Algebra',sub:'Unit 9 · Rules, expressions & variables',topics:[
+        {name:'Input–output tables',gen:hInputOutput},{name:'Number patterns',gen:hSeq},{name:'Order of operations',gen:()=>gOrderOps(0)},
+        {name:'Evaluate expressions',gen:g6_eval},{name:'Variables',gen:g6_var},{name:'Sequences',gen:g6_expGrow}]},
+      {name:'Problem Solving & Logic',sub:'Unit 10 · Multi-step & reasoning',topics:[
+        {name:'Multi-step problems',gen:hTwoStepWord},{name:'Fraction word problems',gen:gFracOf},{name:'Logic',gen:hRiddle},
+        {name:'Counting',gen:g6_count},{name:'Rate problems',gen:g6_rate},{name:'Comparison',gen:hCompareWord}]},
+    ]},
+  {id:'g5',name:'5th Grade Honors',sub:'Pre-algebra: decimals, fractions, ratios & equations',emoji:OWL,color:'var(--teal)',
+    units:[
+      {name:'Decimal Operations',sub:'Unit 1 · All four operations',topics:[
+        {name:'Add decimals',gen:hDecAdd},{name:'Multiply decimals',gen:hDecMul},{name:'Divide decimals',gen:hDecDiv},
+        {name:'Compare decimals',gen:hDecCompare},{name:'Round decimals',gen:hRoundDec},{name:'Decimal ↔ percent',gen:hDecPercent}]},
+      {name:'Fraction Operations',sub:'Unit 2 · Unlike denominators & mixed numbers',topics:[
+        {name:'Common denominators',gen:hCommonDenom},{name:'Multiply fractions',gen:hFracMult},{name:'Divide by unit fractions',gen:hDivUnitFrac},
+        {name:'Fraction of a number',gen:gFracOf},{name:'Mixed & improper',gen:hMixedToImproper},{name:'Equivalent fractions',gen:hEquiv}]},
+      {name:'Percents',sub:'Unit 3 · Of a number to percent change',topics:[
+        {name:'Fraction–decimal–percent',gen:g6_fdp},{name:'Percent of a number',gen:g6_pctOf},{name:'Discounts',gen:g6_discount},
+        {name:'Sales tax',gen:g6_tax},{name:'Percent change',gen:g6_pctChange},{name:'Benchmark percents',gen:hDecPercent}]},
+      {name:'Ratios & Rates',sub:'Unit 4 · Proportional reasoning',topics:[
+        {name:'Ratios',gen:hRatioSimplify},{name:'Equivalent ratios',gen:hEquivRatio},{name:'Unit rate',gen:hUnitRate},
+        {name:'Rate problems',gen:g6_rate},{name:'Scaling',gen:hScale},{name:'Proportion word problems',gen:hCompareWord}]},
+      {name:'Expressions & Order of Ops',sub:'Unit 5 · Exponents & like terms',topics:[
+        {name:'Order of operations',gen:()=>gOrderOps(1)},{name:'Exponents',gen:g6_exp},{name:'Evaluate expressions',gen:g6_eval},
+        {name:'Variables',gen:g6_var},{name:'Combine like terms',gen:g6_likeTerms},{name:'Distributive property',gen:g6_distrib}]},
+      {name:'Equations',sub:'Unit 6 · One-step to variables both sides',topics:[
+        {name:'One-step equations',gen:g6_oneStep},{name:'Two-step equations',gen:g6_twoStep},{name:'Multi-step equations',gen:g6_multiStep},
+        {name:'Variables on both sides',gen:g6_bothSides},{name:'Inequalities',gen:g6_ineq},{name:'Word problems',gen:g6_wordEq}]},
+      {name:'Geometry & Volume',sub:'Unit 7 · Area, volume & angles',topics:[
+        {name:'Area of rectangle',gen:hAreaRect},{name:'Area of square',gen:hAreaSquare},{name:'Perimeter',gen:hPerimeter},
+        {name:'Volume of boxes',gen:hVolumeBox},{name:'Triangle angle sums',gen:g6_angleSum},{name:'Polygon angle sums',gen:g6_polySum}]},
+      {name:'Coordinate Plane',sub:'Unit 8 · Plotting & distance',topics:[
+        {name:'Ordered pairs',gen:g6_ordPair},{name:'Four quadrants',gen:g6_quad},{name:'Graphing points',gen:g6_graphPt},
+        {name:'Distance on a grid',gen:g6_dist},{name:'Midpoints',gen:g6_mid},{name:'Reflections',gen:g6_reflect}]},
+      {name:'Number Theory',sub:'Unit 9 · Primes, GCF, LCM & divisibility',topics:[
+        {name:'Factors',gen:hFactorPick},{name:'Multiples',gen:hMultipleNth},{name:'Prime or composite',gen:hPrime},
+        {name:'GCF',gen:hGCF},{name:'LCM',gen:hLCM},{name:'Divisibility',gen:hDivisible}]},
+      {name:'Problem Solving & Competition Prep',sub:'Unit 10 · Contest-style reasoning',topics:[
+        {name:'Multi-step problems',gen:hTwoStepWord},{name:'Logic puzzles',gen:g6_logic},{name:'Counting',gen:g6_count},
+        {name:'Sequences',gen:g6_expGrow},{name:'Rate problems',gen:g6_rate},{name:'Contest-style',gen:g6_amc8}]},
+    ]},
+  {id:'g6',name:'6th Grade Honors',sub:'Pre-algebra to Algebra I & competition prep',emoji:ROCKET,color:'var(--orange)',
+    units:[
+      {name:'Exponents & Powers',sub:'Unit 1 · Exponents to scientific notation',topics:[
+        {name:'Exponents',gen:g6_exp},{name:'Perfect squares',gen:g6_square},{name:'Perfect cubes',gen:g6_cube},
+        {name:'Order of operations',gen:g6_ooExp},{name:'Scientific notation',gen:g6_sci},{name:'Exponential patterns',gen:g6_expPat}]},
+      {name:'Percents',sub:'Unit 2 · Conversions to percent change',topics:[
+        {name:'Fraction–decimal–percent',gen:g6_fdp},{name:'Percent of a number',gen:g6_pctOf},{name:'Discounts',gen:g6_discount},
+        {name:'Sales tax',gen:g6_tax},{name:'Markups',gen:g6_markup},{name:'Percent increase & decrease',gen:g6_pctChange}]},
+      {name:'Algebraic Expressions',sub:'Unit 3 · Variables to distributive property',topics:[
+        {name:'Variables',gen:g6_var},{name:'Expressions',gen:g6_expr},{name:'Evaluating expressions',gen:g6_eval},
+        {name:'Combining like terms',gen:g6_likeTerms},{name:'Distributive property',gen:g6_distrib},{name:'Algebraic reasoning',gen:g6_algReason}]},
+      {name:'Equations & Inequalities',sub:'Unit 4 · One-step to word problems',topics:[
+        {name:'One-step equations',gen:g6_oneStep},{name:'Two-step equations',gen:g6_twoStep},{name:'Multi-step equations',gen:g6_multiStep},
+        {name:'Variables on both sides',gen:g6_bothSides},{name:'Inequalities',gen:g6_ineq},{name:'Word problems',gen:g6_wordEq}]},
+      {name:'Coordinate Plane',sub:'Unit 5 · Ordered pairs to midpoints',topics:[
+        {name:'Ordered pairs',gen:g6_ordPair},{name:'Four quadrants',gen:g6_quad},{name:'Graphing points',gen:g6_graphPt},
+        {name:'Distance on a grid',gen:g6_dist},{name:'Midpoints',gen:g6_mid},{name:'Coordinate reasoning',gen:g6_coordReason}]},
+      {name:'Linear Relationships',sub:'Unit 6 · Slope to real-world lines',topics:[
+        {name:'Slope as rate of change',gen:g6_slope},{name:'Graphing lines',gen:g6_graphLine},{name:'Linear equations',gen:g6_linEq},
+        {name:'Intercepts',gen:g6_intercept},{name:'Tables & graphs',gen:g6_table},{name:'Real-world applications',gen:g6_realLin}]},
+      {name:'Polygons & Triangles',sub:'Unit 7 · Angles & polygon sums',topics:[
+        {name:'Triangle classifications',gen:g6_triClass},{name:'Angle sums',gen:g6_angleSum},{name:'Exterior angles',gen:g6_extAngle},
+        {name:'Quadrilaterals',gen:g6_quadAngles},{name:'Polygon angle sums',gen:g6_polySum},{name:'Special polygons',gen:g6_regPoly}]},
+      {name:'Circles & Transformations',sub:'Unit 8 · Circles to rigid motions',topics:[
+        {name:'Radius & diameter',gen:g6_radDia},{name:'Circumference',gen:g6_circumf},{name:'Area of circles',gen:g6_circArea},
+        {name:'Reflections',gen:g6_reflect},{name:'Rotations',gen:g6_rotate},{name:'Translations',gen:g6_translate}]},
+      {name:'Algebra I Preview',sub:'Unit 9 · Systems to modeling',topics:[
+        {name:'Systems of equations',gen:g6_system},{name:'Factoring basics',gen:g6_factor},{name:'Quadratic patterns',gen:g6_quadPat},
+        {name:'Exponential growth',gen:g6_expGrow},{name:'Function notation',gen:g6_funcNot},{name:'Algebraic modeling',gen:g6_model}]},
+      {name:'Competition Math & Placement Prep',sub:'Unit 10 · Logic to AMC 8-style',topics:[
+        {name:'Logic puzzles',gen:g6_logic},{name:'Counting strategies',gen:g6_count},{name:'Rate problems',gen:g6_rate},
+        {name:'Advanced word problems',gen:g6_advWord},{name:'MathCounts-style',gen:g6_mathcounts},{name:'AMC 8-style reasoning',gen:g6_amc8}]},
+    ]},
+];
+const courseById=id=>COURSES.find(c=>c.id===id);
+const Q_PER_LESSON=6;
+
+/* ================= NAV ================= */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const chrome=(id!=='lesson'&&id!=='auth');   // hide nav on lesson & auth
+  document.getElementById('foot').style.display=(id==='lesson')?'block':'none';
+  document.getElementById('botnav').style.display=chrome?'flex':'none';
+  document.querySelector('.topbar').style.display=(id==='auth')?'none':'flex';
+  document.querySelectorAll('.botnav .tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));
+  if(id==='courses')renderCourses();
+  if(id==='home')renderHome();
+  if(id==='leaderboard')renderLeaderboard();
+  if(id==='profile')renderProfile();
+  window.scrollTo(0,0); syncStats();
+}
+function goLearn(){ if(S.courseId&&courseById(S.courseId)) go('home'); else go('courses'); }
+function syncStats(){document.getElementById('s-coins').textContent=S.coins;}
+
+/* ================= AUTH ================= */
+let authCurrentMode='login';
+function authMode(m){
+  authCurrentMode=m;
+  document.getElementById('tab-login').classList.toggle('on',m==='login');
+  document.getElementById('tab-signup').classList.toggle('on',m==='signup');
+  document.getElementById('fld-name').hidden=(m!=='signup');
+  document.getElementById('au-submit').textContent=(m==='signup')?'Create account':'Log in';
+  authErr('');
+}
+function authErr(msg){const e=document.getElementById('au-err');e.textContent=msg;e.hidden=!msg;}
+function authSubmit(){
+  const user=normUser(document.getElementById('au-user').value);
+  const pass=document.getElementById('au-pass').value;
+  if(!user){authErr('Please enter a username.');return;}
+  if(!pass||pass.length<4){authErr('Password must be at least 4 characters.');return;}
+  const accounts=loadAccounts();
+  if(authCurrentMode==='signup'){
+    if(accounts[user]){authErr('That username is already taken.');return;}
+    const name=(document.getElementById('au-name').value||'').trim().slice(0,14)||user;
+    const salt=randSalt();
+    accounts[user]={salt,hash:hashPw(pass,salt),name,created:Date.now()};
+    saveAccounts(accounts);
+    currentUser=user; S=clone(defaults); S.name=name; save();
+    try{localStorage.setItem(SESSION_KEY,user);}catch(e){}
+    afterAuth();
+  }else{
+    const a=accounts[user];
+    if(!a||a.hash!==hashPw(pass,a.salt)){authErr('Wrong username or password.');return;}
+    currentUser=user; S=load(); if(!S.name)S.name=a.name; save();
+    try{localStorage.setItem(SESSION_KEY,user);}catch(e){}
+    afterAuth();
+  }
+}
+function afterAuth(){
+  ['au-user','au-pass','au-name'].forEach(id=>document.getElementById(id).value='');
+  authErr(''); syncStats();
+  go(S.courseId&&courseById(S.courseId)?'home':'courses');
+}
+function playGuest(){
+  currentUser=null; try{localStorage.removeItem(SESSION_KEY);}catch(e){}
+  S=load(); syncStats();
+  go(S.courseId&&courseById(S.courseId)?'home':'courses');
+}
+function logout(){
+  if(!confirm('Log out? Your progress is saved to your account.'))return;
+  save(); currentUser=null; try{localStorage.removeItem(SESSION_KEY);}catch(e){}
+  S=clone(defaults); authMode('login'); go('auth');
+}
+
+/* ================= PROFILE ================= */
+function totalStars(){return Object.values(S.progress||{}).reduce((s,cp)=>s+Object.values(cp).reduce((a,b)=>a+b,0),0);}
+function coursesTouched(){return Object.keys(S.progress||{}).filter(k=>Object.values(S.progress[k]).some(v=>v>0)).length;}
+function renderProfile(){
+  const el=document.getElementById('profile');
+  const stars=totalStars();
+  let html=`<div class="prof-card">
+    <div class="prof-av img">${SMILEY}</div>
+    <div class="prof-name">${S.name||'Guest'}</div>
+    <div class="prof-user">${currentUser?'@'+currentUser:'Playing as guest'}</div>
+    <div class="prof-stats">
+      <div class="prof-stat coins"><b>${S.coins}</b><span>Coins</span></div>
+      <div class="prof-stat stars"><b>${stars}</b><span>Stars</span></div>
+      <div class="prof-stat done"><b>${coursesTouched()}</b><span>Courses</span></div>
+    </div>
+  </div>`;
+  if(!currentUser){
+    html+=`<div class="prof-guest">You're playing as a guest. Create an account to keep your coins &amp; progress safe and use your name on the leaderboard.</div>`;
+  }
+  html+=`<div class="prof-actions">
+    <button class="prof-btn" onclick="renamePlayer()">✏️ Change display name</button>`;
+  if(currentUser) html+=`<button class="prof-btn logout" onclick="logout()">Log out</button>`;
+  else html+=`<button class="prof-btn" onclick="go('auth')">🔑 Log in or sign up</button>`;
+  html+=`</div>`;
+  el.innerHTML=html;
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);}
+
+/* ================= COURSE PICKER ================= */
+function unitLessons(u){return u.topics?u.topics.length:u.lessons;}
+function totalLessons(c){return c.units.reduce((s,u)=>s+unitLessons(u),0);}
+function doneLessons(c){const p=S.progress[c.id]||{};return c.units.reduce((s,u,i)=>s+Math.min(p[i]||0,unitLessons(u)),0);}
+function renderCourses(){
+  const el=document.getElementById('courses');
+  el.innerHTML=`<div class="picker-head"><h1>Choose your grade ${GRADCAP}</h1><p>Every grade has its own math adventure</p></div>
+    <div class="course-grid">`+COURSES.map(c=>{
+      const done=doneLessons(c),tot=totalLessons(c);
+      return `<button class="course-card" onclick="chooseCourse('${c.id}')">
+        <span class="c-emoji" style="background:${c.color}">${c.emoji}</span>
+        <span><span class="c-name">${c.name}</span><br><span class="c-sub">${c.sub}</span></span>
+        <span class="c-prog"><b>${done}/${tot}</b>lessons</span>
+      </button>`;
+    }).join('')+`</div>
+    <p class="intro-note">Your coins & progress are saved on this device.<br>
+      <button class="reset" onclick="resetAll()">Reset all progress</button></p>`;
+}
+function chooseCourse(id){S.courseId=id;save();go('home');}
+function resetAll(){if(confirm('Reset all progress and coins?')){S=JSON.parse(JSON.stringify(defaults));save();syncStats();go('courses');}}
+
+/* ================= LEARN / PATH ================= */
+function lessonsDoneIn(cid,ui){return (S.progress[cid]&&S.progress[cid][ui])||0;}
+function isUnlocked(c,ui){if(ui===0)return true;return lessonsDoneIn(c.id,ui-1)>=unitLessons(c.units[ui-1]);}
+function renderHome(){
+  const c=courseById(S.courseId);
+  if(!c){go('courses');return;}
+  const wrap=document.getElementById('home');
+  const mascots=[OWL,'🐨',FOX,'🐸','🦁','🐧',DOLPHIN,'🐢'];
+  let html=`<div class="course-bar">
+    <span class="cb-emoji" style="background:${c.color}">${c.emoji}</span>
+    <span><span class="cb-name">${c.name}</span><br><span class="cb-sub">${c.sub}</span></span>
+    <button class="cb-change" onclick="go('courses')">Change</button>
+  </div>`;
+  c.units.forEach((u,ui)=>{
+    const unlocked=isUnlocked(c,ui);
+    const nLess=unitLessons(u);
+    const done=lessonsDoneIn(c.id,ui);
+    const headIcon=!unlocked?LOCKIMG:(done>=nLess?BOOKS:BOOKOPEN);
+    html+=`<div class="unit-head" style="background:${unlocked?c.color:'#c9c9c9'};box-shadow:0 4px 0 rgba(0,0,0,.12)">
+      <div><h2>${u.name}</h2><p>${u.sub}</p></div><div class="book">${headIcon}</div></div>`;
+    html+='<div class="path">';
+    for(let li=0;li<nLess;li++){
+      const off=[0,-70,-40,40,70,40][li%6];
+      let cls='locked',icon=LOCKIMG,crown='';
+      if(unlocked&&li<done){cls='done';icon=STAR;crown='<span class="node-crown">'+CROWN+'</span>';}
+      else if(unlocked&&li===done){cls='current';icon=PENCIL;}
+      const clickable=(unlocked&&li<=done);
+      const topicTitle=u.topics?` title="${u.topics[li].name}"`:'';
+      const mascot=(li===Math.min(done,nLess-1)&&unlocked)?`<span class="mascot" style="left:${off>0?'-58px':'70px'}">${mascots[(ui*2+li)%mascots.length]}</span>`:'';
+      html+=`<div class="node-wrap" style="transform:translateX(${off}px)">${mascot}
+        <button class="node ${cls}"${topicTitle} ${clickable?`onclick="startLesson(${ui},${li})"`:'disabled'}>${icon}${crown}</button></div>`;
+    }
+    html+='</div>';
+  });
+  wrap.innerHTML=html;
+}
+
+/* ================= LESSON ENGINE ================= */
+let L=null,picked=null,locked=false;
+function startLesson(ui,li){
+  const c=courseById(S.courseId);const u=c.units[ui];
+  const gen=u.topics?u.topics[li].gen:u.gen;
+  const tname=u.topics?u.topics[li].name:null;
+  L={ui,li,i:0,correct:0,questions:[]};
+  for(let n=0;n<Q_PER_LESSON;n++){const q=makeQuestion(gen,li);if(tname)q.kicker=tname;L.questions.push(q);}
+  go('lesson');
+  document.getElementById('l-coins').textContent=S.coins;
+  renderQuestion();
+}
+function makeQuestion(gen,li){
+  const q=gen(li);
+  if(!q.kicker)q.kicker='Solve the problem';
+  if(q.options){ // string-compare mode
+    q.symbolic=true;
+    q.options=q.options.slice().sort(()=>Math.random()-.5);
+    return q;
+  }
+  // numeric mode -> build integer distractors
+  const ans=q.answer,mag=Math.max(4,Math.round(Math.abs(ans)*0.35));
+  const set=new Set([ans]);let g=0;
+  while(set.size<4&&g++<80){let d=ans+(Math.random()<.5?-1:1)*rnd(1,mag);if(ans>=0&&d<0)d=ans+rnd(1,mag);if(d!==ans)set.add(d);}
+  q.options=[...set].sort(()=>Math.random()-.5);
+  q.type=Math.random()<.35?'input':'choice';
+  return q;
+}
+function renderQuestion(){
+  const q=L.questions[L.i];picked=null;locked=false;
+  document.getElementById('pfill').style.width=(L.i/Q_PER_LESSON*100)+'%';
+  document.getElementById('q-kicker').textContent=q.kicker;
+  document.getElementById('q-text').textContent=q.text;
+  document.getElementById('q-sub').textContent=q.type==='input'?'Type your answer':'';
+  const area=document.getElementById('answer-area');
+  if(q.type==='input'){
+    area.innerHTML=`<input class="type-in" id="typein" inputmode="numeric" autocomplete="off" placeholder="?" oninput="picked=this.value.trim();setCheck(picked!=='')" />`;
+    setTimeout(()=>{const t=document.getElementById('typein');if(t)t.focus();},60);
+  }else{
+    area.innerHTML='<div class="choices">'+q.options.map((o,i)=>`<button class="choice" data-v="${o}" onclick="pick(${i},this)">${o}</button>`).join('')+'</div>';
+  }
+  resetFoot();
+}
+function pick(i,el){if(locked)return;document.querySelectorAll('.choice').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');picked=L.questions[L.i].options[i];setCheck(true);}
+function setCheck(on){const b=document.getElementById('check-btn');b.className='btn'+(on?'':' grey');b.textContent='Check';}
+function resetFoot(){document.getElementById('foot').className='foot';document.getElementById('foot-msg').innerHTML='';const b=document.getElementById('check-btn');b.className='btn grey';b.textContent='Check';b.onclick=onCheck;}
+function isRight(q,val){return q.symbolic?String(val)===String(q.answer):Math.abs(Number(val)-Number(q.answer))<1e-9;}
+
+function onCheck(){
+  if(locked)return;const q=L.questions[L.i];
+  if(picked===null||picked===undefined||picked==='')return;
+  locked=true;
+  const right=isRight(q,picked);
+  const f=document.getElementById('foot'),msg=document.getElementById('foot-msg'),b=document.getElementById('check-btn');
+  if(q.type==='choice'){
+    document.querySelectorAll('.choice').forEach(c=>{c.disabled=true;
+      if(isRight(q,c.dataset.v))c.classList.add('correct');
+      else if(String(c.dataset.v)===String(picked))c.classList.add('wrong');});
+  }else{
+    const t=document.getElementById('typein');
+    if(t){t.disabled=true;t.style.borderColor=right?'var(--green)':'var(--red)';t.style.color=right?'var(--green-dark)':'var(--red-dark)';}
+  }
+  if(right){
+    L.correct++;f.classList.add('ok');
+    msg.innerHTML='<span class="foot-emoji">✅</span> Excellent!';
+    b.textContent='Continue';b.className='btn';
+  }else{
+    f.classList.add('no');
+    msg.innerHTML=`<span class="foot-emoji">❌</span> Answer: <b>${q.answer}</b>`;
+    b.textContent='Got it';b.className='btn red';
+  }
+  b.onclick=nextQuestion;
+}
+function nextQuestion(){L.i++;if(L.i>=Q_PER_LESSON){finishLesson();return;}renderQuestion();}
+
+function finishLesson(){
+  document.getElementById('pfill').style.width='100%';
+  const gained=10+L.correct*2;S.coins+=gained;
+  const cid=S.courseId;if(!S.progress[cid])S.progress[cid]={};
+  const cur=S.progress[cid][L.ui]||0;if(L.li===cur)S.progress[cid][L.ui]=cur+1;
+  save();syncStats();
+  const acc=Math.round(L.correct/Q_PER_LESSON*100);
+  document.getElementById('r-coins').textContent=gained;
+  document.getElementById('r-acc').textContent=acc+'%';
+  const tags=['Nice work, mathlete!','You crushed it!','Brainpower +100!','Math wizard in the making!'];
+  document.getElementById('complete-tag').textContent=acc===100?'Perfect lesson! 🌟':pick1(tags);
+  document.querySelector('#complete .big').textContent=acc===100?'🏆':'🎉';
+  go('complete');
+}
+function quitLesson(){if(!L||L.i===0||confirm('Quit this lesson? Progress in it will be lost.'))go('home');}
+
+/* ================= LEADERBOARD ================= */
+const BOTS=[
+  {n:'Ava',c:342,e:FOX},{n:'Leo',c:301,e:ROCKET},{n:'Maya',c:268,e:OWL},
+  {n:'Noah',c:224,e:DOLPHIN},{n:'Zoe',c:198,e:CROWN},{n:'Kai',c:171,e:CHICK},
+  {n:'Mia',c:150,e:STAR},{n:'Ravi',c:132,e:BOOKS},{n:'Ivy',c:108,e:COIN},
+  {n:'Max',c:86,e:GRADCAP},{n:'Luna',c:64,e:BOOKOPEN},{n:'Owen',c:45,e:TROPHY},
+  {n:'Nina',c:28,e:PENCIL},{n:'Sam',c:12,e:LOCKIMG},
+];
+const AV_COLORS=['var(--pink)','var(--blue)','var(--purple)','var(--teal)','var(--orange)','var(--green)'];
+function renderLeaderboard(){
+  const el=document.getElementById('leaderboard');
+  const rows=BOTS.map((b,i)=>({name:b.n,coins:b.c,emoji:b.e,color:AV_COLORS[i%AV_COLORS.length]}));
+  rows.push({name:S.name||'You',coins:S.coins,emoji:SMILEY,color:'transparent',you:true});
+  rows.sort((a,b)=>b.coins-a.coins);
+  const myRank=rows.findIndex(r=>r.you)+1;
+  let html=`<div class="lb-head"><h1>${TROPHY} Camp League</h1><p>Top 7 mathletes get promoted! You're <b>#${myRank}</b> with ${COIN} ${S.coins}.</p></div><div class="lb-list">`;
+  rows.forEach((r,i)=>{
+    if(i===7)html+=`<div class="promo-line">Promotion Zone</div>`;
+    const rank=`<span class="rank">${i+1}</span>`;
+    html+=`<div class="lb-row ${r.you?'you':''}">
+      ${rank}
+      <span class="av" style="background:${r.color}">${r.emoji}</span>
+      <span class="who">${r.name}${r.you?' (you)':''}</span>
+      <span class="amt">${COIN} ${r.coins}</span>
+    </div>`;
+  });
+  html+=`</div><button class="rename" onclick="renamePlayer()">${PENCIL} Change your name</button>`;
+  el.innerHTML=html;
+}
+function renamePlayer(){
+  const n=prompt('Enter your display name:',S.name||'You');
+  if(n&&n.trim()){
+    S.name=n.trim().slice(0,14);save();
+    if(currentUser){const a=loadAccounts();if(a[currentUser]){a[currentUser].name=S.name;saveAccounts(a);}}
+    if(document.getElementById('leaderboard').classList.contains('active'))renderLeaderboard();
+    if(document.getElementById('profile').classList.contains('active'))renderProfile();
+  }
+}
+
+/* ================= INIT ================= */
+(function init(){
+  let sess=null;try{sess=localStorage.getItem(SESSION_KEY);}catch(e){}
+  const accounts=loadAccounts();
+  if(sess&&accounts[sess]){ currentUser=sess; S=load(); syncStats(); go(S.courseId&&courseById(S.courseId)?'home':'courses'); }
+  else { authMode('login'); go('auth'); }
+})();
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(document.getElementById('lesson').classList.contains('active')){
+    const b=document.getElementById('check-btn');if(!b.classList.contains('grey'))b.click();
+  }else if(document.getElementById('auth').classList.contains('active')){
+    authSubmit();
+  }
+});
+</script>
+</body>
+</html>
